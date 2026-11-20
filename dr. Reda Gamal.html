@@ -1,0 +1,3697 @@
+﻿
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الاتجاهات الحديثة في الاتصال الإداري في عصر الذكاء الاصطناعي</title>
+
+  <!-- Google Fonts: Cairo & Tajawal -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome & GSAP -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <style>
+    :root {
+      /* Palette Mapping from Image */
+      --pal-blue: #1b4965;
+      --pal-darkblue: #112233;
+      --pal-purple: #5b21b6;
+      --pal-slate: #475569;
+      --pal-rust: #9a3412;
+      --pal-violet: #6b21a8;
+
+      /* Light Theme Surface & Text */
+      --bg-deep: #f8fafc;
+      --bg-surface: #f1f5f9;
+      --bg-card: #ffffff;
+      --text-primary: #0f172a;
+      --text-muted: #334155;
+      --border-subtle: rgba(91, 33, 182, 0.18);
+      --transition-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background-color: #0f172a;
+      color: var(--text-primary);
+      font-family: 'Tajawal', sans-serif;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* Stage Wrapper */
+    #stage-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #0f172a 100%);
+      position: relative;
+    }
+
+    #deck {
+      width: 100%;
+      height: 100%;
+      max-width: 177.78vh; /* Default 16:9 */
+      max-height: 56.25vw;
+      position: relative;
+      background: linear-gradient(135deg, #f8fafc 0%, #ede9fe 100%);
+      border: 2px solid var(--pal-purple);
+      box-shadow: 0 30px 90px rgba(15, 23, 42, 0.65), 0 0 40px rgba(91, 33, 182, 0.25);
+      overflow: hidden;
+      transition: max-width 0.4s var(--transition-smooth), max-height 0.4s var(--transition-smooth);
+    }
+
+    /* Top Palette Bar */
+    #deck::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--pal-blue) 0%, var(--pal-purple) 25%, var(--pal-rust) 50%, var(--pal-violet) 75%, var(--pal-darkblue) 100%);
+      z-index: 20;
+    }
+
+    /* Aspect Ratio Modes */
+    #deck.ratio-16-9 {
+      max-width: 177.78vh;
+      max-height: 56.25vw;
+    }
+
+    #deck.ratio-4-3 {
+      max-width: 133.33vh;
+      max-height: 75vw;
+    }
+
+    /* Ambient Background Effect */
+    .ambient-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+    }
+
+    .orb-1 { width: 45%; height: 45%; background: var(--pal-purple); top: -10%; left: -10%; opacity: 0.15; }
+    .orb-2 { width: 40%; height: 40%; background: var(--pal-rust); bottom: -15%; right: -10%; opacity: 0.12; }
+
+    .grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(91, 33, 182, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(91, 33, 182, 0.04) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(circle at center, black 45%, transparent 95%);
+    }
+
+    /* Slides Base - Mod 2: Generous Top Padding (~2.2cm / 64px) */
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: 64px 4.5% 4.5% 4.5%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      opacity: 0;
+      visibility: hidden;
+      z-index: 1;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      z-index: 2;
+    }
+
+    /* Typography - Mod 1: Enlarged Proportional Projector-Friendly Font Sizes */
+    h1, h2, h3, .kpi-num { font-family: 'Cairo', sans-serif; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: clamp(0.95rem, 1.15vw, 1.12rem);
+      font-weight: 800;
+      color: var(--pal-purple);
+      letter-spacing: 0.3px;
+      margin-bottom: 0.25rem;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 26px;
+      height: 3.5px;
+      background: var(--pal-rust);
+      border-radius: 2px;
+      display: inline-block;
+    }
+
+    .slide-title {
+      font-size: clamp(1.55rem, 2.4vw, 2.3rem);
+      font-weight: 900;
+      line-height: 1.24;
+      color: var(--pal-darkblue);
+    }
+
+    .slide-sub-heading {
+      font-family: 'Cairo', sans-serif;
+      font-size: clamp(1.15rem, 1.55vw, 1.45rem);
+      font-weight: 800;
+      color: var(--pal-rust);
+      margin-top: 2px;
+    }
+
+    .highlight-gold {
+      background: linear-gradient(135deg, var(--pal-purple), var(--pal-rust));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Content Slide Split Layout: Right Content, Left Visual Frame */
+    .content-split {
+      display: grid;
+      grid-template-columns: 1fr 250px;
+      gap: 1.4rem;
+      align-items: center;
+      flex: 1;
+      margin-top: 0.45rem;
+      min-height: 0;
+    }
+
+    .main-body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.6rem;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .visual-side {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .asset-frame {
+      width: 240px;
+      height: 240px;
+      border-radius: 26px;
+      overflow: hidden;
+      background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(237,233,254,0.85));
+      box-shadow: 0 18px 40px rgba(91, 33, 182, 0.14), 0 0 0 1px rgba(91, 33, 182, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      animation: floatGentle 5.5s ease-in-out infinite;
+    }
+
+    .asset-frame.circle {
+      border-radius: 50%;
+    }
+
+    .asset-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      position: relative;
+      z-index: 2;
+    }
+
+    .asset-fallback {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--pal-purple);
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-align: center;
+      padding: 1rem;
+      z-index: 1;
+    }
+
+    .asset-fallback i {
+      font-size: 2.6rem;
+      color: var(--pal-rust);
+      opacity: 0.85;
+    }
+
+    @keyframes floatGentle {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-9px) scale(1.015); }
+    }
+
+    /* Cover Slide Specifics */
+    .cover-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      border-bottom: 1.5px solid var(--border-subtle);
+      padding-bottom: 0.7rem;
+    }
+
+    .univ-info {
+      font-family: 'Cairo', sans-serif;
+      font-size: clamp(0.95rem, 1.18vw, 1.12rem);
+      font-weight: 700;
+      color: var(--pal-darkblue);
+      line-height: 1.55;
+      border-right: 4px solid var(--pal-purple);
+      padding-right: 14px;
+    }
+
+    .logos-pair {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* Mod 3: Circular University and Faculty Logos */
+    .logo-box {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 2px solid var(--pal-purple);
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.1);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 0.5px;
+    }
+
+    .logo-box img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: contain;
+      position: relative;
+      z-index: 2;
+    }
+
+    .cover-main-grid {
+      display: grid;
+      grid-template-columns: 1.38fr 0.62fr;
+      gap: 1.8rem;
+      align-items: center;
+      flex: 1;
+      padding-top: 0.5rem;
+    }
+
+    .cover-title {
+      font-size: clamp(1.85rem, 2.95vw, 2.8rem);
+      font-weight: 900;
+      line-height: 1.26;
+      color: var(--pal-darkblue);
+      margin-bottom: 0.65rem;
+    }
+
+    .cover-subtitle {
+      font-family: 'Cairo', sans-serif;
+      font-size: clamp(1.2rem, 1.65vw, 1.55rem);
+      font-weight: 700;
+      color: var(--pal-rust);
+      background: rgba(154, 52, 18, 0.08);
+      border-right: 4px solid var(--pal-rust);
+      padding: 0.55rem 1.1rem;
+      border-radius: 0 12px 12px 0;
+      display: inline-block;
+			margin-top: 25px;
+    }
+
+    /* Mod 4 & Mod 5: Presenter Card Pushed Down ~3cm (95px) with Larger Text & 3x Larger Photo */
+    .presenter-wrapper {
+      margin-top: 95px;
+    }
+
+    .presenter-card {
+      display: inline-flex;
+      align-items: center;
+      gap: 22px;
+      background: rgba(255, 255, 255, 0.95);
+      border: 2px solid var(--border-subtle);
+      border-radius: 26px;
+      padding: 0.95rem 1.6rem;
+      box-shadow: 0 14px 32px rgba(91, 33, 182, 0.12);
+			transform: scale(.90); /* 0.8 تعني 80% من حجمه الحالي (يمكنك جعلها 0.75 أو 0.85) */
+      transform-origin: right center; /* يحافظ على محاذاة الصندوق لليمين ولا يترك فراغاً */
+    }
+
+    .presenter-photo {
+      width: 185px;
+      height: 185px;
+      border-radius: 50%;
+      border: 3.5px solid var(--pal-purple);
+      box-shadow: 0 8px 22px rgba(91, 33, 182, 0.28);
+      overflow: hidden;
+      flex-shrink: 0;
+      position: relative;
+      background: #ede9fe;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.35s ease;
+    }
+
+    .presenter-card:hover .presenter-photo {
+      transform: scale(1.04);
+    }
+
+    .presenter-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: relative;
+      z-index: 2;
+    }
+
+    .presenter-details {
+      font-size: clamp(1.08rem, 1.32vw, 1.25rem);
+      line-height: 1.6;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .presenter-details .prep-label {
+      font-size: clamp(1.50rem, 1.18vw, 1.1rem);
+      color: var(--pal-rust);
+      font-weight: 800;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .presenter-details strong {
+      font-family: 'Cairo', sans-serif;
+      font-size: clamp(1.38rem, 1.75vw, 1.68rem);
+      color: var(--pal-purple);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    /* Reusable Cards, Lists, Grids & Callouts - Mod 1 Enlarged Text */
+    .lead-box {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid var(--border-subtle);
+      border-right: 4px solid var(--pal-blue);
+      border-radius: 12px;
+      padding: 0.65rem 1rem;
+      font-size: clamp(1rem, 1.22vw, 1.15rem);
+      line-height: 1.52;
+      color: var(--pal-darkblue);
+      font-weight: 750;
+    }
+
+    .callout-box {
+      background: linear-gradient(90deg, rgba(91, 33, 182, 0.09), rgba(154, 52, 18, 0.08));
+      border: 1.5px solid rgba(91, 33, 182, 0.28);
+      border-right: 5px solid var(--pal-rust);
+      border-radius: 14px;
+      padding: 0.65rem 1.05rem;
+      font-size: clamp(1.20rem, 1.16vw, 1.1rem);
+      line-height: 1.48;
+      color: var(--pal-darkblue);
+      font-weight: 500;
+      box-shadow: 0 6px 18px rgba(91, 33, 182, 0.07);
+    }
+
+    .callout-box strong {
+		  font-size: 1.15rem !important;
+      color: var(--pal-rust);
+      font-family: 'Cairo', sans-serif;
+    }
+
+    .dual-callout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .triple-callout {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.65rem;
+    }
+
+    .items-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.6rem;
+    }
+
+.items-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.6rem;
+    }
+
+    .items-grid-3 .mini-text {
+      font-size: 1.30rem !important; /* حجم الخط المطلوب */
+      line-height: 1.20 !important; /* مسافة الأسطر */
+    }
+
+    .items-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.6rem;
+    }
+
+    .mini-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 13px;
+      padding: 0.62rem 0.85rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      box-shadow: 0 5px 15px rgba(15, 23, 42, 0.04);
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+
+    .mini-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--pal-purple);
+    }
+
+    .mini-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(91, 33, 182, 0.12), rgba(27, 73, 101, 0.12));
+      color: var(--pal-purple);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 900;
+    }
+
+    .mini-card:nth-child(even) .mini-icon {
+      color: var(--pal-rust);
+      background: rgba(154, 52, 18, 0.12);
+    }
+
+    .mini-text {
+      font-size: clamp(1.30rem, 1.14vw, 1.08rem);
+      line-height: 1.44;
+      color: var(--pal-darkblue);
+      font-weight: 500;
+    }
+
+    .mini-text strong {
+      font-family: 'Cairo', sans-serif;
+      color: var(--pal-purple);
+      display: block;
+      font-size: clamp(0.98rem, 1.18vw, 1.12rem);
+      margin-bottom: 2px;
+    }
+
+    /* Custom Styled Table - Mod 1 Enlarged Text */
+    .styled-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 5px;
+      font-size: clamp(0.95rem, 1.15vw, 1.08rem);
+    }
+
+    .styled-table th {
+      background: linear-gradient(90deg, var(--pal-darkblue), var(--pal-purple));
+      color: #ffffff;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 800;
+      padding: 0.5rem 0.9rem;
+      text-align: right;
+      font-size: clamp(0.98rem, 1.18vw, 1.12rem);
+    }
+
+    .styled-table th:first-child { border-radius: 0 10px 10px 0; }
+    .styled-table th:last-child { border-radius: 10px 0 0 10px; }
+
+    .styled-table td {
+      background: #ffffff;
+      padding: 0.48rem 0.9rem;
+      color: var(--pal-darkblue);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      line-height: 1.38;
+      font-weight: 700;
+    }
+
+    .styled-table td:first-child {
+      border-right: 3px solid var(--pal-purple);
+      border-radius: 0 10px 10px 0;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+      color: var(--pal-purple);
+    }
+
+    .styled-table td:last-child {
+      border-left: 1px solid var(--border-subtle);
+      border-radius: 10px 0 0 10px;
+    }
+
+    /* Timeline / Process Steps */
+    .timeline-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      position: relative;
+    }
+
+    .timeline-row-5 {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.55rem;
+    }
+
+    .timeline-row-6 {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.5rem;
+    }
+
+    .stage-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border-subtle);
+      border-top: 4px solid var(--pal-purple);
+      border-radius: 14px;
+      padding: 0.68rem 0.75rem;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .stage-card:nth-child(2n) { border-top-color: var(--pal-rust); }
+    .stage-card:nth-child(3n) { border-top-color: var(--pal-blue); }
+
+    .stage-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--pal-rust);
+    }
+
+    .stage-title {
+      font-family: 'Cairo', sans-serif;
+      font-size: clamp(0.98rem, 1.15vw, 1.08rem);
+      font-weight: 800;
+      color: var(--pal-darkblue);
+      line-height: 1.3;
+    }
+
+    .stage-desc {
+      font-size: clamp(1.15rem, 1.06vw, 1rem);
+      line-height: 1.25;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .stage-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: clamp(1.10rem, 1.04vw, 0.98rem);
+      line-height: 1.38;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .stage-list li::before {
+      content: "• ";
+      color: var(--pal-purple);
+      font-weight: bold;
+    }
+
+    /* Radial / Hub Layout for Slide 7 */
+    .hub-layout {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 0.85rem;
+      align-items: center;
+    }
+
+    .hub-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .hub-center {
+      width: 155px;
+      height: 155px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--pal-darkblue), var(--pal-purple));
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1rem;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 900;
+      font-size: 1.08rem;
+      line-height: 1.35;
+      box-shadow: 0 12px 30px rgba(91, 33, 182, 0.3), 0 0 0 8px rgba(91, 33, 182, 0.12);
+    }
+
+    .hub-center i {
+      font-size: 1.85rem;
+      color: #fbbf24;
+      margin-bottom: 6px;
+    }
+
+    /* Section Title Pill inside multi-part slides */
+    .sec-label {
+      font-family: 'Cairo', sans-serif;
+      font-size: clamp(1rem, 1.2vw, 1.14rem);
+      font-weight: 800;
+      color: var(--pal-blue);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 0.25rem;
+    }
+
+    /* Closing Slide */
+    .closing-box {
+      text-align: center;
+      max-width: 820px;
+      margin: auto;
+      background: linear-gradient(160deg, #ffffff 0%, #ede9fe 100%);
+      border: 2px solid var(--pal-purple);
+      border-radius: 28px;
+      padding: 4rem 3rem;
+      box-shadow: 0 24px 65px rgba(15, 23, 42, 0.16);
+      position: relative;
+    }
+
+    .closing-icon {
+      width: 74px;
+      height: 74px;
+      margin: 0 auto 1.2rem auto;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--pal-purple), var(--pal-rust));
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      box-shadow: 0 10px 25px rgba(91, 33, 182, 0.28);
+    }
+
+    .closing-text {
+      font-family: 'Cairo', sans-serif;
+      font-size: clamp(2.1rem, 3.6vw, 3.3rem);
+      font-weight: 900;
+      line-height: 1.3;
+    }
+
+    /* Controls Bar */
+    .controls-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 56px;
+      background: rgba(248, 250, 252, 0.96);
+      backdrop-filter: blur(12px);
+      border-top: 1.5px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.8rem;
+      z-index: 60;
+      transform: translateY(100%);
+      opacity: 0;
+      transition: transform 0.35s var(--transition-smooth), opacity 0.35s ease;
+    }
+
+    .controls-bar.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .progress-track {
+      position: absolute;
+      top: -2px;
+      right: 0;
+      left: 0;
+      height: 3px;
+      background: rgba(15, 23, 42, 0.1);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 4%;
+      background: linear-gradient(90deg, var(--pal-purple), var(--pal-rust));
+      transition: width 0.45s var(--transition-smooth);
+    }
+
+    .nav-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-btn {
+      background: rgba(91, 33, 182, 0.1);
+      border: 1px solid var(--border-subtle);
+      color: var(--pal-darkblue);
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 0.92rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+      font-weight: 700;
+    }
+
+    .nav-btn:hover, .nav-btn.active, .thumb-card:focus {
+      background: var(--pal-purple);
+      border-color: var(--pal-purple);
+      color: #ffffff;
+      outline: none;
+    }
+
+    .slide-counter {
+      font-family: 'Cairo', sans-serif;
+      font-weight: 800;
+      color: var(--pal-rust);
+      font-size: 0.96rem;
+      min-width: 72px;
+      text-align: center;
+    }
+
+ .c ontrols-bar .nav-group,
+.controls-bar .slide-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 0px;
+}
+
+.controls-bar #prev-btn,
+.controls-bar #next-btn,
+.controls-bar .prev-btn,
+.controls-bar .next-btn {
+  padding: 2px 4px;
+  font-size: 0.78rem;
+  min-height: 28px;
+  height: 28px;
+  margin: 0;
+}
+
+.controls-bar #slide-counter,
+.controls-bar .slide-counter {
+  font-size: 0.78rem;
+  padding: 0 2px;
+  margin: 0;
+	min-width: 0;
+}
+
+
+    /* Slide Overview Modal */
+    #overview-modal {
+      position: absolute;
+      inset: 0;
+      background: rgba(248, 250, 252, 0.98);
+      backdrop-filter: blur(5px);
+      z-index: 50;
+      display: none;
+      flex-direction: column;
+      padding: 64px 4.5% 4.5rem 4.5%;
+    }
+
+    #overview-modal.open { display: flex; }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 0.85rem;
+      margin-top: 1.2rem;
+      overflow-y: auto;
+      padding-bottom: 1rem;
+    }
+
+    .thumb-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 0.9rem 1rem;
+      cursor: pointer;
+      transition: none !important;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+    }
+
+    .thumb-card.current {
+      border-color: var(--pal-rust);
+      background: rgba(154, 52, 18, 0.14);
+      transform: scale(0.97);
+      outline: none;
+    }
+
+    .thumb-card:hover, .thumb-card:focus {
+      border-color: var(--pal-purple);
+      background: rgba(91, 33, 182, 0.1);
+      color: var(--pal-darkblue);
+      outline: none;
+    }
+
+/* تقليل عرض عناصر الانتقال لمنع التداخل في الشريط السفلي */
+    #transition-picker-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      margin-inline-start: 4px;
+      flex-shrink: 0;
+    }
+
+    #transition-picker-wrap .nav-btn {
+      padding: 0.3rem 0.55rem;
+      font-size: 0.78rem;
+      white-space: nowrap;
+    }
+
+    .controls-bar .transition-select.nav-btn {
+max-width: 165px;
+      width: 165px;
+      min-width: 210px;
+      padding: 0.3rem 0.55rem;
+      font-size: 0.78rem;
+      text-overflow: ellipsis;
+    }
+
+
+.controls-bar,
+.controls-bar .nav-group,
+.controls-bar .slide-nav,
+#transition-picker-wrap {
+  gap: 3px !important;
+}
+
+.controls-bar > *,
+.controls-bar .nav-group > *,
+.controls-bar .slide-nav > * {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  margin-inline-start: 0 !important;
+  margin-inline-end: 0 !important;
+}
+
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+
+.ratio-4-3,
+.aspect-4-3 {
+  aspect-ratio: 4 / 3;
+}
+
+.ratio-16-9,
+.aspect-16-9 {
+  aspect-ratio: 16 / 9;
+}
+
+
+/* زرّا عن ومساعدة بجوار القائمة المنسدلة */
+/* مجموعة أزرار الأيقونات الدائرية (عن / مساعدة) */
+.info-icon-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-inline-start: 6px;
+  padding-inline-start: 8px;
+  border-inline-start: 1.5px solid rgba(91, 33, 182, 0.22);
+}
+
+.info-circle-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.16);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  flex-shrink: 0;
+}
+
+/* زر "عن": تدرج كحلي-أزرق ملكي */
+.info-circle-btn.about-btn {
+  background: linear-gradient(135deg, var(--pal-blue), #2563eb);
+}
+
+/* زر "مساعدة": تدرج دافئ برتقالي-نحاسي */
+.info-circle-btn.help-btn {
+  background: linear-gradient(135deg, var(--pal-rust), #d97706);
+}
+
+.info-circle-btn:hover {
+  transform: translateY(-2px) scale(1.08);
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.24);
+  filter: brightness(1.08);
+}
+
+.info-circle-btn:active {
+  transform: scale(0.95);
+}
+
+.info-circle-btn:focus-visible {
+  outline: 2px solid var(--pal-purple);
+  outline-offset: 2px;
+}
+
+/* خلفية النافذة المنبثقة */
+.info-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.info-modal-backdrop[hidden] {
+  display: none;
+}
+
+/* بطاقة النافذة */
+.info-modal-card {
+  width: 100%;
+  max-width: 470px;
+  background: #ffffff;
+  color: #0f172a;
+  border-radius: 16px;
+  border: 1px solid rgba(91, 33, 182, 0.16);
+  box-shadow: 0 22px 50px rgba(15, 23, 42, 0.28);
+  overflow: hidden;
+  font-family: 'Cairo', 'Tajawal', sans-serif;
+}
+
+.info-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #4c1d95, #6d28d9);
+  color: #ffffff;
+}
+
+.info-modal-header h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.info-modal-close {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  font-size: 1rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.info-modal-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.info-modal-body {
+  padding: 18px;
+}
+
+.app-badge {
+  display: inline-block;
+  background: rgba(109, 40, 217, 0.1);
+  color: #5b21b6;
+  font-weight: 800;
+  font-size: 0.92rem;
+  padding: 5px 12px;
+  border-radius: 999px;
+  margin-bottom: 10px;
+}
+
+.app-desc {
+  margin: 0 0 14px;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: #334155;
+	text-align: center;
+  margin-inline: auto;
+  max-width: 95%;
+  line-height: 1.65;
+  margin-bottom: 12px;
+}
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.feature-chip {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 0.83rem;
+  font-weight: 650;
+  color: #6B00FF;
+}
+
+.modal-divider {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 14px 0;
+}
+
+.author-box {
+  background: #faf5ff;
+  border: 1px solid rgba(109, 40, 217, 0.22);
+  border-top: 3px solid #6d28d9;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.author-role {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 700;
+}
+
+.author-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #D53C1A;
+  margin-top: 3px;
+}
+
+.social-title {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #334155;
+	text-align: center;
+  margin-inline: auto;
+  max-width: 95%;
+  line-height: 1.65;
+  margin-bottom: 8px;
+}
+
+.social-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.social-icon-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 8px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: #E0F8F9;
+  text-decoration: none;
+  color: #0f172a;
+  font-size: 0.84rem;
+  font-weight: 700;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.social-icon-card:hover {
+  transform: translateY(-2px);
+  border-color: #7c3aed;
+  box-shadow: 0 8px 18px rgba(109, 40, 217, 0.12);
+}
+
+.social-icon-frame {
+  width: 22px;
+  height: 22px;
+  border-radius: 12px;
+  background: #f8fafc;
+  display: grid;
+  place-items: center;
+}
+
+.shortcuts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-bottom: 14px;
+}
+
+.shortcut-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #f8fafc;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.shortcut-row kbd {
+  font-family: inherit;
+  background: #F1FFFC;
+  border: 1px solid #cbd5e1;
+  border-bottom-width: 3px;
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #4c1d95;
+}
+
+.help-tip {
+  background: #f5f3ff;
+  color: #4c1d95;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+
+.app-badge {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-inline: auto;
+}
+
+
+/* التشغيل التلقائي للشرائح */
+    .autoplay-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+
+    .autoplay-btn {
+      padding: 2px 5px !important;
+      font-size: 0.78rem !important;
+      min-height: 28px;
+      height: 28px;
+			min-width: 65px;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    .autoplay-btn.is-playing {
+      background: var(--pal-rust) !important;
+      border-color: var(--pal-rust) !important;
+      color: #ffffff !important;
+    }
+
+    .autoplay-select {
+      padding: 1px 2px !important;
+      font-size: 0.78rem !important;
+      min-height: 28px;
+      height: 28px;
+      width: auto !important;
+      min-width: 50px !important;
+      max-width: 50px !important;
+      cursor: pointer;
+    }
+
+
+  </style>
+</head>
+<body>
+
+
+<div id="stage-container">
+
+<!-- نافذة: عن -->
+  <div class="info-modal-backdrop" id="about-modal" role="dialog" aria-modal="true" aria-labelledby="about-modal-title" hidden>
+    <div class="info-modal-card" dir="rtl">
+      <div class="info-modal-header">
+        <h3 id="about-modal-title">عن البرنامج</h3>
+        <button type="button" class="info-modal-close" data-close-modal="about-modal" aria-label="إغلاق">✕</button>
+      </div>
+      <div class="info-modal-body">
+        <div class="app-badge">برنامج Prezfect للعروض التقديمية الاحترافية<br>v1.3.1</div>
+        <p class="app-desc">
+         هو عبارة عن بيئة عرض رقمية خفيفة وسريعة مصممة لإدارة الشرائح في العروض الأكاديمية واللقاءات العملية، مع تحكم مباشر أثناء العرض من خلال اختصارات سريعة، وتأثيرات احترافية مختلفة للانتقال السلس بين الشرائح تتميز بالانسيابية والتدفق، ومن مميزات البرنامج ما يلي:
+        </p>
+
+        <div class="features-grid">
+          <div class="feature-chip">⚡ أكثر من 35 تأثير احترافي للانتقالات بين الشرائح</div>
+					<div class="feature-chip">⚡ سهولة التبديل بين تأثيرات الانتقال أثناء العرض ودون تشتت</div>
+          <div class="feature-chip">⚡ تنقل مرن وسلس بين الشرائح من خلال فهرس يستعرضها جميعًا</div>
+					<div class="feature-chip">⚡ وصول فوري للشرائح أثناء العرض من خلال اختصار سريع</div>
+					<div class="feature-chip">⚡ تشغيل تلقائي للشرائح مع تحديد المدة الزمنية للتوقف بينها</div>
+          <div class="feature-chip">⚡ شريط تحكم عملي أسفل الشاشة ذاتي الاختفاء أثناء العرض</div>
+          <div class="feature-chip">⚡ دعم مباشر لأبعاد الشاشة أثناء العرض (16:9 / 4:3)</div>
+          <div class="feature-chip">⚡ أسلوب عرض جديد واحترافي ومتميز عن عروض البوربوينت</div>
+        </div>
+
+        <hr class="modal-divider">
+
+        <div class="author-box">
+          <div class="author-role">تطوير</div>
+          <div class="author-name">د. محمد فرح متولي</div>
+        </div>
+
+        <div class="social-section">
+          <div class="social-title">للتواصل</div>
+          <div class="social-links">
+            <a href="https://fb.com/mfarahmetwally" target="_blank" rel="noopener noreferrer" class="social-icon-card" title="فيسبوك">
+              <span class="social-icon-frame">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="#1877F2" aria-hidden="true">
+                  <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/>
+                </svg>
+              </span>
+              <span>فيسبوك</span>
+            </a>
+
+            <a href="https://wa.me/qr/HFT25DLNLVDVO1" target="_blank" rel="noopener noreferrer" class="social-icon-card" title="واتساب">
+              <span class="social-icon-frame">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="#25D366" aria-hidden="true">
+                  <path d="M12.031 2c-5.516 0-9.969 4.453-9.969 9.969 0 1.763.461 3.484 1.336 5.002L2 22l5.164-1.355a9.93 9.93 0 0 0 4.867 1.242h.004c5.515 0 9.969-4.453 9.969-9.969 0-2.663-1.037-5.167-2.921-7.05A9.908 9.908 0 0 0 12.031 2zm5.822 14.133c-.243.685-1.408 1.31-1.964 1.394-.502.075-1.137.107-1.832-.114-.422-.134-.964-.313-1.658-.612-2.918-1.26-4.824-4.205-4.97-4.399-.146-.195-1.187-1.58-1.187-3.014 0-1.434.751-2.139 1.018-2.431.267-.292.583-.365.778-.365.194 0 .389.002.559.01.179.008.419-.068.656.5.243.583.827 2.017.9 2.163.073.146.121.316.024.51-.097.195-.146.316-.292.487-.146.17-.306.38-.437.51-.146.146-.298.304-.128.596.17.292.756 1.247 1.623 2.019 1.115.994 2.055 1.302 2.347 1.448.292.146.462.122.632-.073.17-.195.729-.85.923-1.142.194-.292.389-.243.656-.146.267.097 1.696.8 1.988.946.292.146.486.219.559.34.073.122.073.705-.17 1.39z"/>
+                </svg>
+              </span>
+              <span>واتساب</span>
+            </a>
+
+            <a href="https://t.me/drmfarahm" target="_blank" rel="noopener noreferrer" class="social-icon-card" title="تليجرام">
+              <span class="social-icon-frame">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="#26A5E4" aria-hidden="true">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.37-.48 1.02-.73 3.98-1.73 6.64-2.87 7.97-3.43 3.79-1.58 4.58-1.85 5.1-1.86.11 0 .37.03.54.17.14.12.18.28.2.4-.01.06.01.24 0 .38z"/>
+                </svg>
+              </span>
+              <span>تليجرام</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- نافذة: مساعدة -->
+  <div class="info-modal-backdrop" id="help-modal" role="dialog" aria-modal="true" aria-labelledby="help-modal-title" hidden>
+    <div class="info-modal-card" dir="rtl">
+      <div class="info-modal-header">
+        <h3 id="help-modal-title">دليل الاستخدام</h3>
+        <button type="button" class="info-modal-close" data-close-modal="help-modal" aria-label="إغلاق">✕</button>
+      </div>
+      <div class="info-modal-body">
+        <p class="app-desc">
+          دليل سريع لاختصارات التنقل والتحكم في العرض أثناء الشرح والمناقشة:
+        </p>
+
+        <div class="shortcuts-list">
+				  <div class="shortcut-row">
+            <span>✧ الوصول السريع إلى أي شريحة</span>
+            <kbd>كتابة رقمها ثم (Enter) فورًا</kbd>
+          </div>
+          <div class="shortcut-row">
+            <span>✧ الشريحة التالية</span>
+            <kbd>(← سهم يسار) • (بكرة الماوس لأسفل ↓)</kbd>
+          </div>
+			    <div class="shortcut-row">
+            <span>✧ الشريحة السابقة</span>
+            <kbd>(→ سهم يمين) • (بكرة الماوس لأعلى ↑)</kbd>
+          </div>
+          <div class="shortcut-row">
+            <span>✧ تغيير تأثير الانتقال بين الشرائح</span>
+            <kbd>(سهم لأعلى ↑ / ↓ سهم لأسفل)</kbd>
+          </div>
+          <div class="shortcut-row">
+            <span>✧ وضع العرض العريض (16:9) ▭</span>
+            <kbd>(W)</kbd>
+          </div>
+          <div class="shortcut-row">
+            <span>✧ وضع العرض التقليدي (4:3) ▢</span>
+            <kbd>(S)</kbd>
+          </div>
+          <div class="shortcut-row">
+            <span>✧ إعادة تشغيل الشريحة الحالية</span>
+            <kbd>(R)</kbd>
+          </div>
+          <div class="shortcut-row">
+            <span>✧ استعراض فهرس الشرائح</span>
+            <kbd>(O)</kbd>
+          </div>
+          <div class="shortcut-row">
+            <span>✧ وضع ملء الشاشة</span>
+            <kbd>(F)</kbd>
+          </div>
+          <div class="shortcut-row">
+            <span>✧ التشغيل التلقائي للشرائح</span>
+            <kbd>(P)</kbd>
+          </div>
+        </div>
+
+        <div class="help-tip">
+ يمكنك الاختيار من بين أكثر من <strong>35 </strong> تأثيرًا مختلفًا للانتقالات بين الشرائح، ومنها اختيار <strong>«عشوائي»</strong> الذي يطوف على كل التأثيرات مع كل انتقال بين الشرائح أثناء العرض.
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div id="deck" class="ratio-16-9" role="region" aria-label="عرض تفاعلي">
+
+  <!-- Ambient Background -->
+  <div class="ambient-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <!-- =====================================================================
+       غلاف العرض (SLIDE 0)
+       Assets:
+       - Assets/logo-azhar.png (شعار جامعة الأزهر)
+       - Assets/logo-edu.png (شعار كلية التربية)
+       - Assets/presenter.jpg (صورة د/ رضا جمال محمد عبده)
+       - Assets/00.jpg (الصورة العامة للغلاف)
+  ====================================================================== -->
+  <section class="slide active" data-title="غلاف العرض: الاتجاهات الحديثة في الاتصال الإداري">
+    <!-- Top Header: University Info Right, Two Circular Logos Left -->
+    <div class="cover-top-bar anim-item">
+      <div class="univ-info">
+        جامعة الأزهر<br>
+        كلية التربية بنين بالقاهرة<br>
+        قسم الإدارة والتخطيط والدراسات المقارنة
+      </div>
+      <div class="logos-pair">
+        <div class="logo-box" title="شعار جامعة الأزهر (Assets/logo-azhar.png)">
+          <img src="Assets/logo-azhar.png" alt="شعار جامعة الأزهر" onerror="this.style.display='none'">
+          <div class="asset-fallback" style="font-size:0.7rem;padding:2px;"><i class="fa-solid fa-landmark" style="font-size:1.4rem;"></i>الأزهر</div>
+        </div>
+        <div class="logo-box" title="شعار كلية التربية (Assets/logo-edu.png)">
+          <img src="Assets/logo-edu.png" alt="شعار كلية التربية" onerror="this.style.display='none'">
+          <div class="asset-fallback" style="font-size:0.7rem;padding:2px;"><i class="fa-solid fa-graduation-cap" style="font-size:1.4rem;"></i>التربية</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Cover Body -->
+    <div class="cover-main-grid">
+      <div class="hero-content">
+        <div class="eyebrow anim-item">محاضرة علمية بعنوان:</div>
+        <h1 class="cover-title anim-item"><br>
+          الاتجاهات الحديثة في <span class="highlight-gold">الاتصال الإداري</span> في عصر الذكاء الاصطناعي
+        </h1>
+        <div class="cover-subtitle anim-item">
+          من نقل المعلومات إلى بناء المعرفة والثقة وصناعة القرار
+        </div>
+        <div class="presenter-wrapper anim-item">
+          <div class="presenter-card">
+            <div class="presenter-photo" title="صورة المحاضر (Assets/presenter.jpg)">
+              <img src="Assets/presenter.jpg" alt="د/ رضا جمال محمد عبده" onerror="this.style.display='none'">
+              <div class="asset-fallback" style="font-size:0.85rem;padding:0;"><i class="fa-solid fa-user-tie" style="font-size:4.2rem;"></i></div>
+            </div>
+            <div class="presenter-details">
+              <span class="prep-label">إعداد وتقديم</span>
+              <strong>د/ رضا جمال محمد عبده</strong>
+              مدرس الإدارة والتخطيط والدراسات المقارنة<br>
+              كلية التربية – جامعة الأزهر
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="visual-side anim-item">
+        <div class="asset-frame circle" style="width:375px;height:375px;" title="Assets/00.jpg">
+          <img src="Assets/00.jpg" alt="الاتصال الإداري والذكاء الاصطناعي" onerror="this.style.display='none'">
+          <div class="asset-fallback">
+            <i class="fa-solid fa-network-wired"></i>
+            <span>Assets/00.jpg</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       الشريحة 1: سؤال افتتاحي (Assets/01.jpg)
+  ====================================================================== -->
+  <section class="slide" data-title="1. سؤال افتتاحي: هل ما زلنا نتواصل بالطريقة نفسها؟">
+    <div>
+      <div class="eyebrow anim-item">مدخل تمهيدي • الشريحة 01</div>
+<h2 class="slide-title anim-item">
+        سؤال افتتاحي:<br>
+        <span style="font-size: 0.9em; color: var(--pal-purple);">هل ما زلنا نتواصل بالطريقة نفسها؟</span>
+      </h2>
+    </div>
+
+    <div class="content-split">
+      <div class="main-body">
+        <div class="mini-card anim-item" style="padding:0.9rem 1.1rem;border-right:5px solid var(--pal-slate);">
+          <div class="mini-icon"><i class="fa-solid fa-scroll"></i></div>
+           <div class="mini-text" style="font-size:1.44rem;">
+             <strong>الأمس</strong>
+              المكاتبات الورقية والاتصالات التقليدية.
+            </div>
+          </div>
+
+          <div class="mini-card anim-item" style="padding:0.9rem 1.1rem;border-right:5px solid var(--pal-blue);">
+            <div class="mini-icon"><i class="fa-solid fa-envelope-open-text"></i></div>
+            <div class="mini-text" style="font-size:1.44rem;">
+              <strong>اليوم</strong>
+              البريد الإلكتروني والمنصات الرقمية والاتصال الإلكتروني.
+            </div>
+          </div>
+
+          <div class="mini-card anim-item" style="padding:0.9rem 1.1rem;border-right:5px solid var(--pal-purple);">
+            <div class="mini-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+            <div class="mini-text" style="font-size:1.44rem;">
+              <strong>الغد</strong>
+              اتصال ذكي واستباقي وتفاعلي وشخصي.
+            </div>
+          </div>
+
+          <div class="callout-box anim-item" style="margin-top:0.35rem;padding:0.95rem 1.2rem;font-size:1.12rem;">
+            <strong><i class="fa-solid fa-circle-question"></i> السؤال المحوري:</strong><br>
+            كيف يمكن للذكاء الاصطناعي أن يعيد تشكيل الاتصال الإداري داخل المؤسسات التعليمية، وينقلها من مجرد تبادل المعلومات إلى إدارة المعرفة وصناعة القرار؟
+          </div>
+        </div>
+
+        <div class="visual-side anim-item">
+					<div class="asset-frame" title="Assets/01.jpg" style="width: 250px; height: 400px; transform: scale(1.0);">
+            <img src="Assets/01.jpg" alt="سؤال افتتاحي" onerror="this.style.display='none'">
+            <div class="asset-fallback"><i class="fa-solid fa-comments"></i><span>Assets/01.jpg</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         الشريحة 2: أهداف العرض (Assets/02.jpg)
+    ====================================================================== -->
+    <section class="slide" data-title="2. أهداف المحاضرة">
+      <div>
+        <div class="eyebrow anim-item">خارطة المحاضرة • الشريحة 02</div>
+        <h2 class="slide-title anim-item">أهداف المحاضرة</h2>
+      </div>
+
+      <div class="content-split">
+        <div class="main-body">
+          <div class="sec-label anim-item"><i class="fa-solid fa-bullseye"></i> تهدف المحاضرة إلى:</div>
+          <div class="items-grid-2">
+            <div class="mini-card anim-item"><div class="mini-icon">1</div><div class="mini-text"><i class="fa-solid fa-book-open" style="color:var(--pal-purple);margin-left:5px;"></i>التعرف على مفهوم الاتصال الإداري وأهميته ووظائفه داخل المؤسسات.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon">2</div><div class="mini-text"><i class="fa-solid fa-microchip" style="color:var(--pal-rust);margin-left:5px;"></i>تحليل التحولات التي أحدثها الذكاء الاصطناعي في الاتصال الإداري.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon">3</div><div class="mini-text"><i class="fa-solid fa-compass" style="color:var(--pal-purple);margin-left:5px;"></i>تحديد أبرز الاتجاهات الحديثة في الاتصال الإداري والمؤسسي.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon">4</div><div class="mini-text"><i class="fa-solid fa-globe" style="color:var(--pal-rust);margin-left:5px;"></i>التعرف على بعض التجارب والتطبيقات الجامعية العالمية.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon">5</div><div class="mini-text"><i class="fa-solid fa-university" style="color:var(--pal-purple);margin-left:5px;"></i>استكشاف مجالات توظيف الذكاء الاصطناعي في الاتصال الإداري بالجامعات.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon">6</div><div class="mini-text"><i class="fa-solid fa-lightbulb" style="color:var(--pal-rust);margin-left:5px;"></i>تقديم تطبيقات مقترحة لتطوير الاتصال الإداري بجامعة الأزهر.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon">7</div><div class="mini-text"><i class="fa-solid fa-scale-balanced" style="color:var(--pal-purple);margin-left:5px;"></i>تحديد التحديات والمتطلبات الأخلاقية والتنظيمية المرتبطة بالاتصال الذكي.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon">8</div><div class="mini-text"><i class="fa-solid fa-list-check" style="color:var(--pal-rust);margin-left:5px;"></i>صياغة مجموعة من التوصيات التي تدعم التحول نحو اتصال إداري ذكي وفعال.</div></div>
+          </div>
+        </div>
+
+        <div class="visual-side anim-item">
+          <div class="asset-frame circle" title="Assets/02.jpg" style="width: 265px; height: 265px; transform: scale(-5.0);">
+            <img src="Assets/02.jpg" alt="أهداف المحاضرة" onerror="this.style.display='none'">
+            <div class="asset-fallback"><i class="fa-solid fa-bullseye"></i><span>Assets/02.jpg</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         الشريحة 3: مفهوم الاتصال الإداري ووظائفه (Assets/03.jpg)
+    ====================================================================== -->
+    <section class="slide" data-title="3. مفهوم الاتصال الإداري ووظائفه">
+      <div>
+        <div class="eyebrow anim-item">الإطار المفاهيمي • الشريحة 03</div>
+        <h2 class="slide-title anim-item">مفهوم الاتصال الإداري ووظائفه</h2>
+      </div>
+
+      <div class="content-split">
+        <div class="main-body">
+          <div class="lead-box anim-item">
+            <strong style="color:var(--pal-purple);font-family:'Cairo',sans-serif;">مفهوم الاتصال الإداري: </strong>
+            عملية منظمة ومستمرة لتبادل المعلومات والبيانات والأفكار والتعليمات بين المستويات والوحدات الإدارية داخل المؤسسة، وبين المؤسسة وبيئتها الخارجية؛ بما يسهم في تحقيق التنسيق والتكامل، ودعم اتخاذ القرار، وإنجاز الأهداف المؤسسية.
+          </div>
+
+          <div class="sec-label anim-item"><i class="fa-solid fa-layer-group"></i> وظائف الاتصال الإداري:</div>
+          <div class="items-grid-4">
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-share-nodes"></i></div><div class="mini-text">نقل المعلومات والتعليمات والقرارات.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-diagram-project"></i></div><div class="mini-text">التنسيق بين الوحدات والإدارات المختلفة.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-chess-king"></i></div><div class="mini-text">دعم عملية اتخاذ القرارات.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-handshake"></i></div><div class="mini-text">تعزيز العلاقات والثقة المؤسسية.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-chart-line"></i></div><div class="mini-text">متابعة الأداء وتقويم الإنجاز.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-shield-halved"></i></div><div class="mini-text">إدارة التغيير والأزمات.</div></div>
+            <div class="mini-card anim-item" style="grid-column: span 2;"><div class="mini-icon"><i class="fa-solid fa-users-rays"></i></div><div class="mini-text">تعزيز المشاركة والتفاعل المؤسسي.</div></div>
+          </div>
+        </div>
+
+        <div class="visual-side anim-item">
+          <div class="asset-frame" title="Assets/03.jpg" style="width: 265px; height: 400px; transform: scale(1.0);">
+            <img src="Assets/03.jpg" alt="مفهوم الاتصال الإداري ووظائفه" onerror="this.style.display='none'">
+            <div class="asset-fallback"><i class="fa-solid fa-sitemap"></i><span>Assets/03.jpg</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         الشريحة 4: تطور الاتصال الإداري (Assets/04.jpg)
+    ====================================================================== -->
+    <section class="slide" data-title="4. تطور الاتصال الإداري">
+      <div>
+        <div class="eyebrow anim-item">المسار التاريخي والتقني • الشريحة 04</div>
+        <h2 class="slide-title anim-item">تطور الاتصال الإداري</h2>
+      </div>
+
+      <div class="content-split">
+        <div class="main-body">
+          <div class="sec-label anim-item"><i class="fa-solid fa-timeline"></i> مر الاتصال الإداري بعدد من المراحل المتتابعة:</div>
+
+          <div class="timeline-row">
+            <div class="stage-card anim-item">
+              <span class="stage-badge"><i class="fa-solid fa-file-lines"></i> المرحلة 01</span>
+              <div class="stage-title">الاتصال الإداري التقليدي</div>
+              <p class="stage-desc">اعتمد على المكاتبات الورقية، والاجتماعات المباشرة، والتقارير المطبوعة، والاتصالات الهاتفية.</p>
+            </div>
+
+            <div class="stage-card anim-item">
+              <span class="stage-badge"><i class="fa-solid fa-at"></i> المرحلة 02</span>
+              <div class="stage-title">الاتصال الإداري الإلكتروني</div>
+              <p class="stage-desc">ارتبط باستخدام البريد الإلكتروني، والأنظمة الإلكترونية، والمراسلات الرقمية.</p>
+            </div>
+
+            <div class="stage-card anim-item">
+              <span class="stage-badge"><i class="fa-solid fa-server"></i> المرحلة 03</span>
+              <div class="stage-title">الاتصال الإداري الرقمي المتكامل</div>
+              <p class="stage-desc">اعتمد على المنصات الرقمية الموحدة، وقواعد البيانات، وتكامل الأنظمة الإدارية.</p>
+            </div>
+
+            <div class="stage-card anim-item">
+              <span class="stage-badge"><i class="fa-solid fa-robot"></i> المرحلة 04</span>
+              <div class="stage-title">الاتصال الإداري الذكي</div>
+              <p class="stage-desc">يستند إلى تطبيقات الذكاء الاصطناعي، وتحليل البيانات، والمساعدات الافتراضية، والتنبؤ بالاحتياجات، وإنتاج المحتوى الذكي.</p>
+            </div>
+          </div>
+
+          <div class="callout-box anim-item" style="margin-top:0.25rem;">
+            <strong><i class="fa-solid fa-bolt"></i> التحول الأساسي: </strong>
+            لم يعد التطور مقتصرًا على وسيلة الاتصال، بل امتد إلى طبيعة المعلومات، وسرعة معالجتها، وقدرة المؤسسة على الاستجابة والتنبؤ.
+          </div>
+        </div>
+
+        <div class="visual-side anim-item">
+          <div class="asset-frame circle" title="Assets/04.jpg" style="width: 265px; height: 265px; transform: scale(1.0);">
+            <img src="Assets/04.jpg" alt="تطور الاتصال الإداري" onerror="this.style.display='none'">
+            <div class="asset-fallback"><i class="fa-solid fa-arrow-trend-up"></i><span>Assets/04.jpg</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         الشريحة 5: ماذا يضيف الذكاء الاصطناعي إلى الاتصال الإداري؟ (Assets/05.jpg)
+    ====================================================================== -->
+    <section class="slide" data-title="5. ماذا يضيف الذكاء الاصطناعي إلى الاتصال الإداري؟">
+      <div>
+        <div class="eyebrow anim-item">القدرات التقنية • الشريحة 05</div>
+        <h2 class="slide-title anim-item">ماذا يضيف الذكاء الاصطناعي إلى الاتصال الإداري؟</h2>
+      </div>
+
+      <div class="content-split">
+        <div class="main-body">
+          <div class="sec-label anim-item"><i class="fa-solid fa-microchip"></i> يتيح الذكاء الاصطناعي مجموعة من الإمكانات التي يمكن توظيفها في تطوير الاتصال الإداري، من أبرزها:</div>
+
+          <table class="styled-table">
+            <thead>
+              <tr class="anim-item">
+                <th style="width:36%;">التقنية</th>
+                <th>تطبيقها في الاتصال الإداري</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="anim-item"><td><i class="fa-solid fa-language" style="margin-left:6px;"></i>معالجة اللغة الطبيعية</td><td>فهم الرسائل والاستفسارات وتصنيفها</td></tr>
+              <tr class="anim-item"><td><i class="fa-solid fa-pen-nib" style="margin-left:6px;"></i>الذكاء الاصطناعي التوليدي</td><td>إعداد الخطابات والتقارير والتعاميم</td></tr>
+              <tr class="anim-item"><td><i class="fa-solid fa-brain" style="margin-left:6px;"></i>التعلم الآلي</td><td>اكتشاف الأنماط وتحليل البيانات</td></tr>
+              <tr class="anim-item"><td><i class="fa-solid fa-database" style="margin-left:6px;"></i>تحليل البيانات الضخمة</td><td>دعم القرارات الإدارية</td></tr>
+              <tr class="anim-item"><td><i class="fa-solid fa-gears" style="margin-left:6px;"></i>الأتمتة الذكية</td><td>إنجاز المهام المتكررة</td></tr>
+              <tr class="anim-item"><td><i class="fa-solid fa-headset" style="margin-left:6px;"></i>المساعدات الافتراضية</td><td>الرد على الاستفسارات وتوجيه المستفيدين</td></tr>
+            </tbody>
+          </table>
+
+          <div class="callout-box anim-item">
+            <strong><i class="fa-solid fa-user-check"></i> تكامل الإنسان والآلة: </strong>
+            ولا تعني هذه الإمكانات الاستغناء عن العنصر البشري، وإنما تعزيز قدرته على أداء المهام وتحسين جودة العمل الإداري.
+          </div>
+        </div>
+
+        <div class="visual-side anim-item">
+          <div class="asset-frame" title="Assets/05.jpg" style="width: 265px; height: 265px; transform: scale(1.0);">
+            <img src="Assets/05.jpg" alt="ماذا يضيف الذكاء الاصطناعي" onerror="this.style.display='none'">
+            <div class="asset-fallback"><i class="fa-solid fa-robot"></i><span>Assets/05.jpg</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         الشريحة 6: مقارنة بين الاتصال الإداري التقليدي والمدعوم بالذكاء الاصطناعي (Assets/06.jpg)
+    ====================================================================== -->
+    <section class="slide" data-title="6. مقارنة بين الاتصال التقليدي والمدعوم بالذكاء الاصطناعي">
+      <div>
+        <div class="eyebrow anim-item">المقارنة التحليلية • الشريحة 06</div>
+        <h2 class="slide-title anim-item">مقارنة بين الاتصال الإداري التقليدي والاتصال المدعوم بالذكاء الاصطناعي</h2>
+      </div>
+
+      <div class="content-split">
+        <div class="main-body">
+          <table class="styled-table">
+            <thead>
+              <tr class="anim-item">
+                <th style="width:22%;">وجه المقارنة</th>
+                <th style="width:38%;">الاتصال التقليدي</th>
+                <th style="width:40%;">الاتصال المدعوم بالذكاء الاصطناعي</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="anim-item"><td>السرعة</td><td>ترتبط بالإجراءات البشرية</td><td>استجابة أسرع وأتمتة للمهام</td></tr>
+              <tr class="anim-item"><td>معالجة المعلومات</td><td>يدوية في كثير من الأحيان</td><td>معالجة وتحليل آلي</td></tr>
+              <tr class="anim-item"><td>التخصيص</td><td>رسائل موحدة غالبًا</td><td>رسائل موجهة حسب احتياجات المستفيد</td></tr>
+              <tr class="anim-item"><td>التنبؤ</td><td>يعتمد على الخبرة والتقدير</td><td>يستفيد من تحليل الأنماط والمؤشرات</td></tr>
+              <tr class="anim-item"><td>التفاعل</td><td>محدود أو دوري</td><td>تفاعل مستمر ومتعدد القنوات</td></tr>
+              <tr class="anim-item"><td>دعم القرار</td><td>تقارير تقليدية</td><td>مؤشرات وتحليلات داعمة</td></tr>
+              <tr class="anim-item"><td>قياس الأداء</td><td>متابعة دورية</td><td>مؤشرات قابلة للرصد والتحليل</td></tr>
+            </tbody>
+          </table>
+
+          <div class="callout-box anim-item">
+            <strong><i class="fa-solid fa-scale-balanced"></i> ملاحظة: </strong>
+            تظل المسؤولية النهائية عن القرارات الإدارية والمعلومات الرسمية مسؤولية بشرية ومؤسسية.
+          </div>
+        </div>
+
+        <div class="visual-side anim-item">
+          <div class="asset-frame circle" title="Assets/06.jpg" style="width: 265px; height: 265px; transform: scale(1.0);">
+            <img src="Assets/06.jpg" alt="مقارنة بين الاتصال التقليدي والذكي" onerror="this.style.display='none'">
+            <div class="asset-fallback"><i class="fa-solid fa-code-compare"></i><span>Assets/06.jpg</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         الشريحة 7: خريطة الاتجاهات الحديثة في الاتصال الإداري (Assets/07.jpg)
+    ====================================================================== -->
+    <section class="slide" data-title="7. خريطة الاتجاهات الحديثة في الاتصال الإداري">
+      <div>
+        <div class="eyebrow anim-item">البانوراما الشاملة • الشريحة 07</div>
+        <h2 class="slide-title anim-item">خريطة الاتجاهات الحديثة في الاتصال الإداري</h2>
+      </div>
+
+      <div class="content-split">
+        <div class="main-body">
+          <div class="sec-label anim-item"><i class="fa-solid fa-diagram-project"></i> يمكن تصنيف الاتجاهات الحديثة في الاتصال الإداري في عصر الذكاء الاصطناعي إلى ثمانية اتجاهات رئيسة:</div>
+
+          <div class="hub-layout">
+            <div class="hub-col">
+              <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div><div class="mini-text"><strong>1. الاتصال الإداري التوليدي</strong></div></div>
+              <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-bell"></i></div><div class="mini-text"><strong>2. الاتصال الاستباقي والتنبؤي</strong></div></div>
+              <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-user-tag"></i></div><div class="mini-text"><strong>3. الاتصال الشخصي المخصص</strong></div></div>
+              <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-robot"></i></div><div class="mini-text"><strong>4. المساعدات الافتراضية الذكية</strong></div></div>
+            </div>
+
+            <div class="hub-center anim-item">
+              <i class="fa-solid fa-compass"></i>
+              <span>الاتجاهات الحديثة<br>الثمانية</span>
+            </div>
+
+            <div class="hub-col">
+              <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-ear-listen"></i></div><div class="mini-text"><strong>5. تحليل المشاعر والاستماع المؤسسي</strong></div></div>
+              <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-share-alt"></i></div><div class="mini-text"><strong>6. الاتصال متعدد القنوات والوسائط</strong></div></div>
+              <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-chart-pie"></i></div><div class="mini-text"><strong>7. الاتصال المعزز بالبيانات</strong></div></div>
+              <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-shield-halved"></i></div><div class="mini-text"><strong>8. الحوكمة الرقمية والاتصال المسؤول</strong></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="visual-side anim-item">
+          <div class="asset-frame" title="Assets/07.jpg" style="width: 265px; height: 500px; transform: scale(1.0);">
+            <img src="Assets/07.jpg" alt="خريطة الاتجاهات الحديثة" onerror="this.style.display='none'">
+            <div class="asset-fallback"><i class="fa-solid fa-map-location-dot"></i><span>Assets/07.jpg</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         الشريحة 8: 1- الاتصال الإداري التوليدي (Assets/08.jpg)
+    ====================================================================== -->
+    <section class="slide" data-title="8. الاتجاهات الحديثة: 1- الاتصال الإداري التوليدي">
+      <div>
+        <div class="eyebrow anim-item">الاتجاهات الحديثة في الاتصال الإداري • الشريحة 08</div>
+        <h2 class="slide-title anim-item">1- الاتصال الإداري التوليدي</h2>
+      </div>
+
+      <div class="content-split">
+        <div class="main-body">
+          <div class="lead-box anim-item">
+            يقصد بالاتصال الإداري التوليدي توظيف تطبيقات الذكاء الاصطناعي التوليدي في إعداد المحتوى الإداري وصياغته وتلخيصه وتحسينه، بما يسهم في تسريع عمليات الاتصال ورفع كفاءتها.
+          </div>
+
+          <div class="sec-label anim-item"><i class="fa-solid fa-layer-group"></i> أبرز التطبيقات:</div>
+          <div class="items-grid-3">
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-file-signature"></i></div><div class="mini-text">إعداد مسودات الخطابات والمكاتبات الرسمية.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-bullhorn"></i></div><div class="mini-text">صياغة التعاميم والتعليمات الإدارية.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-clipboard-list"></i></div><div class="mini-text">تلخيص الاجتماعات ومحاضر اللجان.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-chart-column"></i></div><div class="mini-text">إعداد التقارير الدورية.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-circle-question"></i></div><div class="mini-text">صياغة الأسئلة الشائعة والإجابات عنها.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-language"></i></div><div class="mini-text">ترجمة المراسلات والمحتوى المؤسسي.</div></div>
+          </div>
+
+          <div class="dual-callout">
+            <div class="callout-box anim-item">
+              <strong><i class="fa-solid fa-gem"></i> القيمة المضافة: </strong>
+              تقليل الوقت والجهد وتحسين اتساق الصياغة الإدارية.
+            </div>
+            <div class="callout-box anim-item" style="border-right-color:var(--pal-purple);">
+              <strong><i class="fa-solid fa-user-shield"></i> الضابط الأساسي: </strong>
+              مراجعة المحتوى والتحقق من دقته واعتماده من المسؤول المختص قبل إرساله رسميًا.
+            </div>
+          </div>
+        </div>
+
+        <div class="visual-side anim-item">
+          <div class="asset-frame circle" title="Assets/08.jpg" style="width: 265px; height: 265px; transform: scale(1.0);">
+            <img src="Assets/08.jpg" alt="الاتصال الإداري التوليدي" onerror="this.style.display='none'">
+            <div class="asset-fallback"><i class="fa-solid fa-pen-fancy"></i><span>Assets/08.jpg</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         الشريحة 9: 2- الاتصال الاستباقي والتنبؤي (Assets/09.jpg)
+    ====================================================================== -->
+    <section class="slide" data-title="9. الاتجاهات الحديثة: 2- الاتصال الاستباقي والتنبؤي">
+      <div>
+        <div class="eyebrow anim-item">الاتجاهات الحديثة في الاتصال الإداري • الشريحة 09</div>
+        <h2 class="slide-title anim-item">2- الاتصال الاستباقي والتنبؤي</h2>
+      </div>
+
+      <div class="content-split">
+        <div class="main-body">
+          <div class="lead-box anim-item">
+            يمثل الاتصال الاستباقي انتقال المؤسسة من انتظار استفسارات المستفيدين وشكاواهم إلى توقع احتياجاتهم وتقديم المعلومات المناسبة قبل ظهور المشكلة.
+          </div>
+
+          <div class="sec-label anim-item"><i class="fa-solid fa-gears"></i> آليات التطبيق:</div>
+          <div class="items-grid-3">
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div><div class="mini-text">تحليل الاستفسارات المتكررة.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="mini-text">رصد الموضوعات التي تزداد حولها الشكاوى.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-arrow-up-right-dots"></i></div><div class="mini-text">توقع فترات ارتفاع الطلب على الخدمات.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-bell"></i></div><div class="mini-text">إرسال التنبيهات قبل المواعيد النهائية.</div></div>
+            <div class="mini-card anim-item" style="grid-column: span 2;"><div class="mini-icon"><i class="fa-solid fa-paper-plane"></i></div><div class="mini-text">توجيه المعلومات إلى الفئات المعنية في الوقت المناسب.</div></div>
+          </div>
+
+          <div class="dual-callout">
+            <div class="callout-box anim-item">
+              <strong><i class="fa-solid fa-graduation-cap"></i> مثال جامعي: </strong>
+              إرسال تنبيه للطلاب قبل موعد التسجيل، يتضمن خطوات التسجيل والمستندات المطلوبة والمواعيد المهمة، مع إتاحة قناة للاستفسار.
+            </div>
+            <div class="callout-box anim-item" style="border-right-color:var(--pal-purple);">
+              <strong><i class="fa-solid fa-gem"></i> القيمة المضافة: </strong>
+              تقليل الاستفسارات المتكررة، وتحسين الاستعداد، ورفع مستوى رضا المستفيدين.
+            </div>
+          </div>
+        </div>
+
+        <div class="visual-side anim-item">
+          <div class="asset-frame" title="Assets/09.jpg" style="width: 265px; height: 500px; transform: scale(1.0);">
+            <img src="Assets/09.jpg" alt="الاتصال الاستباقي والتنبؤي" onerror="this.style.display='none'">
+            <div class="asset-fallback"><i class="fa-solid fa-bell-concierge"></i><span>Assets/09.jpg</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         الشريحة 10: 3- الاتصال الشخصي المخصص (Assets/10.jpg)
+    ====================================================================== -->
+    <section class="slide" data-title="10. الاتجاهات الحديثة: 3- الاتصال الشخصي المخصص">
+      <div>
+        <div class="eyebrow anim-item">الاتجاهات الحديثة في الاتصال الإداري • الشريحة 10</div>
+        <h2 class="slide-title anim-item">3- الاتصال الشخصي المخصص</h2>
+      </div>
+
+      <div class="content-split">
+        <div class="main-body">
+          <div class="lead-box anim-item">
+            يقصد به تصميم الرسائل والمعلومات وفقًا لاحتياجات المستفيدين وخصائص الفئات المستهدفة، بدلًا من الاعتماد الكامل على الرسائل الموحدة.
+          </div>
+
+          <div class="sec-label anim-item"><i class="fa-solid fa-users"></i> الفئات المستهدفة داخل الجامعة:</div>
+          <div class="items-grid-3">
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-user-graduate"></i></div><div class="mini-text">الطلاب.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-chalkboard-user"></i></div><div class="mini-text">أعضاء هيئة التدريس.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-user-tie"></i></div><div class="mini-text">القيادات الأكاديمية.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-id-card-clip"></i></div><div class="mini-text">العاملون والإداريون.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-earth-africa"></i></div><div class="mini-text">الطلاب الوافدون.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-award"></i></div><div class="mini-text">الخريجون والمستفيدون الخارجيون.</div></div>
+          </div>
+
+          <div class="sec-label anim-item"><i class="fa-solid fa-list-check"></i> أمثلة تطبيقية:</div>
+          <div class="items-grid-2">
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-calendar-check"></i></div><div class="mini-text">رسالة مخصصة للطالب تتعلق بالتسجيل والامتحانات.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-table"></i></div><div class="mini-text">رسالة لعضو هيئة التدريس بشأن الجداول والأنشطة الأكاديمية.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-file-contract"></i></div><div class="mini-text">رسالة للعاملين بشأن الإجراءات والقرارات الإدارية.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-language"></i></div><div class="mini-text">محتوى إرشادي للطلاب الوافدين بلغات مناسبة.</div></div>
+          </div>
+
+          <div class="dual-callout">
+            <div class="callout-box anim-item">
+              <strong><i class="fa-solid fa-gem"></i> القيمة المضافة: </strong>
+              وصول المعلومات المناسبة إلى الشخص المناسب في الوقت المناسب.
+            </div>
+            <div class="callout-box anim-item" style="border-right-color:var(--pal-purple);">
+              <strong><i class="fa-solid fa-lock"></i> شرط النجاح: </strong>
+              استخدام البيانات وفق ضوابط الخصوصية وعدم توظيفها في تصنيف غير عادل للمستفيدين.
+            </div>
+          </div>
+        </div>
+
+        <div class="visual-side anim-item">
+          <div class="asset-frame circle" title="Assets/10.jpg" style="width: 265px; height: 265px; transform: scale(1.0);">
+            <img src="Assets/10.jpg" alt="الاتصال الشخصي المخصص" onerror="this.style.display='none'">
+            <div class="asset-fallback"><i class="fa-solid fa-user-check"></i><span>Assets/10.jpg</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         الشريحة 11: 4- المساعدات الافتراضية والروبوتات الحوارية (Assets/11.jpg)
+    ====================================================================== -->
+    <section class="slide" data-title="11. الاتجاهات الحديثة: 4- المساعدات الافتراضية والروبوتات الحوارية">
+      <div>
+        <div class="eyebrow anim-item">الاتجاهات الحديثة في الاتصال الإداري • الشريحة 11</div>
+        <h2 class="slide-title anim-item">4- المساعدات الافتراضية والروبوتات الحوارية</h2>
+      </div>
+
+      <div class="content-split">
+        <div class="main-body">
+          <div class="lead-box anim-item">
+            تُعد المساعدات الافتراضية من أبرز تطبيقات الذكاء الاصطناعي في الاتصال المؤسسي، حيث تتيح التفاعل مع المستفيدين والإجابة عن استفساراتهم بصورة آلية على مدار الساعة.
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.85rem;">
+            <div>
+              <div class="sec-label anim-item"><i class="fa-solid fa-graduation-cap"></i> أبرز الاستخدامات الجامعية:</div>
+              <div style="display:flex;flex-direction:column;gap:0.4rem;">
+                <div class="mini-card anim-item" style="padding:0.48rem 0.75rem;"><div class="mini-icon" style="width:30px;height:30px;"><i class="fa-solid fa-user-plus"></i></div><div class="mini-text">الاستفسار عن القبول والتسجيل.</div></div>
+                <div class="mini-card anim-item" style="padding:0.48rem 0.75rem;"><div class="mini-icon" style="width:30px;height:30px;"><i class="fa-solid fa-clock"></i></div><div class="mini-text">معرفة مواعيد الامتحانات.</div></div>
+                <div class="mini-card anim-item" style="padding:0.48rem 0.75rem;"><div class="mini-icon" style="width:30px;height:30px;"><i class="fa-solid fa-calendar-days"></i></div><div class="mini-text">الاستعلام عن الجداول الدراسية.</div></div>
+                <div class="mini-card anim-item" style="padding:0.48rem 0.75rem;"><div class="mini-icon" style="width:30px;height:30px;"><i class="fa-solid fa-circle-info"></i></div><div class="mini-text">التعرف على إجراءات الخدمات الطلابية.</div></div>
+                <div class="mini-card anim-item" style="padding:0.48rem 0.75rem;"><div class="mini-icon" style="width:30px;height:30px;"><i class="fa-solid fa-folder-open"></i></div><div class="mini-text">توضيح المستندات المطلوبة.</div></div>
+                <div class="mini-card anim-item" style="padding:0.48rem 0.75rem;"><div class="mini-icon" style="width:30px;height:30px;"><i class="fa-solid fa-signs-post"></i></div><div class="mini-text">توجيه المستفيد إلى الإدارة المختصة.</div></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="sec-label anim-item"><i class="fa-solid fa-check-double"></i> متطلبات النجاح:</div>
+              <div style="display:flex;flex-direction:column;gap:0.4rem;">
+                <div class="mini-card anim-item" style="padding:0.48rem 0.75rem;"><div class="mini-icon" style="width:30px;height:30px;"><i class="fa-solid fa-database"></i></div><div class="mini-text">بناء قاعدة معرفة رسمية ومحدثة.</div></div>
+                <div class="mini-card anim-item" style="padding:0.48rem 0.75rem;"><div class="mini-icon" style="width:30px;height:30px;"><i class="fa-solid fa-link"></i></div><div class="mini-text">ربط المساعد الافتراضي بالمصادر المعتمدة.</div></div>
+                <div class="mini-card anim-item" style="padding:0.48rem 0.75rem;"><div class="mini-icon" style="width:30px;height:30px;"><i class="fa-solid fa-headset"></i></div><div class="mini-text">توفير إمكانية التحويل إلى موظف مختص.</div></div>
+                <div class="mini-card anim-item" style="padding:0.48rem 0.75rem;"><div class="mini-icon" style="width:30px;height:30px;"><i class="fa-solid fa-shield-halved"></i></div><div class="mini-text">حماية البيانات الشخصية.</div></div>
+                <div class="mini-card anim-item" style="padding:0.48rem 0.75rem;"><div class="mini-icon" style="width:30px;height:30px;"><i class="fa-solid fa-arrows-rotate"></i></div><div class="mini-text">متابعة جودة الإجابات وتحديثها.</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout-box anim-item">
+            <strong><i class="fa-solid fa-robot"></i> مثال تطبيقي: </strong>
+            مساعد افتراضي على البوابة الإلكترونية للجامعة يجيب عن الأسئلة الإدارية الشائعة، ويوجه الحالات التي تتطلب تدخلًا بشريًا إلى الجهة المختصة.
+          </div>
+        </div>
+
+        <div class="visual-side anim-item">
+          <div class="asset-frame" title="Assets/11.jpg" style="width: 265px; height: 500px; transform: scale(1.0);">
+            <img src="Assets/11.jpg" alt="المساعدات الافتراضية والروبوتات الحوارية" onerror="this.style.display='none'">
+            <div class="asset-fallback"><i class="fa-solid fa-comments"></i><span>Assets/11.jpg</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         الشريحة 12: 5- تحليل المشاعر والاستماع المؤسسي (Assets/12.jpg)
+    ====================================================================== -->
+    <section class="slide" data-title="12. الاتجاهات الحديثة: 5- تحليل المشاعر والاستماع المؤسسي">
+      <div>
+        <div class="eyebrow anim-item">الاتجاهات الحديثة في الاتصال الإداري • الشريحة 12</div>
+        <h2 class="slide-title anim-item">5- تحليل المشاعر والاستماع المؤسسي</h2>
+      </div>
+
+      <div class="content-split">
+        <div class="main-body">
+          <div class="lead-box anim-item">
+            يقصد بالاستماع المؤسسي استخدام أدوات التحليل الذكي لرصد الموضوعات والاتجاهات والآراء التي يعبر عنها المستفيدون عبر قنوات الاتصال المختلفة.
+          </div>
+
+          <div class="sec-label anim-item"><i class="fa-solid fa-layer-group"></i> مجالات التطبيق:</div>
+          <div class="items-grid-3">
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-comment-dots"></i></div><div class="mini-text">تحليل شكاوى الطلاب ومقترحاتهم.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-repeat"></i></div><div class="mini-text">رصد الموضوعات المتكررة في الرسائل.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-tags"></i></div><div class="mini-text">تصنيف الملاحظات حسب طبيعتها.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-face-smile"></i></div><div class="mini-text">التعرف على الاتجاهات العامة للرضا وعدم الرضا.</div></div>
+            <div class="mini-card anim-item" style="grid-column: span 2;"><div class="mini-icon"><i class="fa-solid fa-magnifying-glass"></i></div><div class="mini-text">اكتشاف المشكلات الإدارية المتكررة.</div></div>
+          </div>
+
+          <div class="triple-callout">
+            <div class="callout-box anim-item">
+              <strong><i class="fa-solid fa-graduation-cap"></i> مثال جامعي: </strong>
+              تحليل الشكاوى الواردة بشأن إجراءات التسجيل لتحديد أكثر الخطوات التي تسبب صعوبات للطلاب، ثم تقديم تقرير للإدارة المختصة.
+            </div>
+            <div class="callout-box anim-item" style="border-right-color:var(--pal-purple);">
+              <strong><i class="fa-solid fa-gem"></i> القيمة المضافة: </strong>
+              تحويل التغذية الراجعة إلى معلومات تساعد في تحسين الأداء.
+            </div>
+            <div class="callout-box anim-item" style="border-right-color:var(--pal-blue);">
+              <strong><i class="fa-solid fa-triangle-exclamation"></i> تنبيه علمي: </strong>
+              تحليل المشاعر يقدم مؤشرات احتمالية، ولا يجوز اعتباره حكمًا قطعيًا على آراء الأفراد أو نواياهم؛ إذ يحتاج إلى تفسير ومراجعة بشرية.
+            </div>
+          </div>
+        </div>
+
+        <div class="visual-side anim-item">
+          <div class="asset-frame circle" title="Assets/12.jpg" style="width: 265px; height: 500px; border-radius: 22px; transform: scale(1.0);">
+            <img src="Assets/12.jpg" alt="تحليل المشاعر والاستماع المؤسسي" onerror="this.style.display='none'">
+            <div class="asset-fallback"><i class="fa-solid fa-ear-listen"></i><span>Assets/12.jpg</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         الشريحة 13: 6- الاتصال متعدد القنوات والوسائط (Assets/13.jpg)
+    ====================================================================== -->
+    <section class="slide" data-title="13. الاتجاهات الحديثة: 6- الاتصال متعدد القنوات والوسائط">
+      <div>
+        <div class="eyebrow anim-item">الاتجاهات الحديثة في الاتصال الإداري • الشريحة 13</div>
+        <h2 class="slide-title anim-item">6- الاتصال متعدد القنوات والوسائط</h2>
+      </div>
+
+      <div class="content-split">
+        <div class="main-body">
+          <div class="lead-box anim-item">
+            يقصد به توظيف قنوات ووسائط متعددة ومتكاملة لإيصال الرسائل الإدارية إلى المستفيدين، بما يضمن سهولة الوصول واستمرارية التواصل.
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.85rem;">
+            <div>
+              <div class="sec-label anim-item"><i class="fa-solid fa-tower-broadcast"></i> القنوات المستخدمة:</div>
+              <div class="items-grid-2">
+                <div class="mini-card anim-item" style="padding:0.48rem 0.7rem;"><div class="mini-icon" style="width:30px;height:30px;"><i class="fa-solid fa-envelope"></i></div><div class="mini-text">البريد الإلكتروني.</div></div>
+                <div class="mini-card anim-item" style="padding:0.48rem 0.7rem;"><div class="mini-icon" style="width:30px;height:30px;"><i class="fa-solid fa-globe"></i></div><div class="mini-text">المواقع والبوابات الإلكترونية.</div></div>
+                <div class="mini-card anim-item" style="padding:0.48rem 0.7rem;"><div class="mini-icon" style="width:30px;height:30px;"><i class="fa-solid fa-mobile-screen"></i></div><div class="mini-text">التطبيقات الذكية.</div></div>
+                <div class="mini-card anim-item" style="padding:0.48rem 0.7rem;"><div class="mini-icon" style="width:30px;height:30px;"><i class="fa-solid fa-laptop-code"></i></div><div class="mini-text">المنصات التعليمية والإدارية.</div></div>
+                <div class="mini-card anim-item" style="padding:0.48rem 0.7rem;"><div class="mini-icon" style="width:30px;height:30px;"><i class="fa-solid fa-comment-sms"></i></div><div class="mini-text">الرسائل النصية.</div></div>
+                <div class="mini-card anim-item" style="padding:0.48rem 0.7rem;"><div class="mini-icon" style="width:30px;height:30px;"><i class="fa-solid fa-video"></i></div><div class="mini-text">الاجتماعات المرئية.</div></div>
+                <div class="mini-card anim-item" style="grid-column: span 2;padding:0.48rem 0.7rem;"><div class="mini-icon" style="width:30px;height:30px;"><i class="fa-solid fa-photo-film"></i></div><div class="mini-text">المقاطع التوضيحية والوسائط المتعددة.</div></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="sec-label anim-item"><i class="fa-solid fa-list-check"></i> متطلبات الاتصال متعدد القنوات:</div>
+              <div style="display:flex;flex-direction:column;gap:0.4rem;">
+                <div class="mini-card anim-item" style="padding:0.48rem 0.7rem;"><div class="mini-icon" style="width:30px;height:30px;"><i class="fa-solid fa-database"></i></div><div class="mini-text">توحيد مصدر المعلومات الرسمية.</div></div>
+                <div class="mini-card anim-item" style="padding:0.48rem 0.7rem;"><div class="mini-icon" style="width:30px;height:30px;"><i class="fa-solid fa-diagram-project"></i></div><div class="mini-text">تكامل القنوات المختلفة.</div></div>
+                <div class="mini-card anim-item" style="padding:0.48rem 0.7rem;"><div class="mini-icon" style="width:30px;height:30px;"><i class="fa-solid fa-universal-access"></i></div><div class="mini-text">مراعاة احتياجات ذوي الإعاقة.</div></div>
+                <div class="mini-card anim-item" style="padding:0.48rem 0.7rem;"><div class="mini-icon" style="width:30px;height:30px;"><i class="fa-solid fa-hand-holding-heart"></i></div><div class="mini-text">توفير بدائل مناسبة لمن لا تتوافر لديهم مهارات رقمية كافية.</div></div>
+                <div class="mini-card anim-item" style="padding:0.48rem 0.7rem;"><div class="mini-icon" style="width:30px;height:30px;"><i class="fa-solid fa-check-circle"></i></div><div class="mini-text">ضمان اتساق الرسائل عبر جميع القنوات.</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout-box anim-item">
+            <strong><i class="fa-solid fa-gem"></i> القيمة المضافة: </strong>
+            تحسين الوصول إلى المعلومات وتقليل احتمالات تضارب التعليمات.
+          </div>
+        </div>
+
+        <div class="visual-side anim-item">
+          <div class="asset-frame" title="Assets/13.jpg" style="width: 265px; height: 500px; border-radius: 22px; transform: scale(1.0);">
+            <img src="Assets/13.jpg" alt="الاتصال متعدد القنوات والوسائط" onerror="this.style.display='none'">
+            <div class="asset-fallback"><i class="fa-solid fa-share-nodes"></i><span>Assets/13.jpg</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         الشريحة 14: 7- الاتصال المعزز بالبيانات (Assets/14.jpg)
+    ====================================================================== -->
+    <section class="slide" data-title="14. الاتجاهات الحديثة: 7- الاتصال المعزز بالبيانات">
+      <div>
+        <div class="eyebrow anim-item">الاتجاهات الحديثة في الاتصال الإداري • الشريحة 14</div>
+        <h2 class="slide-title anim-item">7- الاتصال المعزز بالبيانات</h2>
+      </div>
+
+      <div class="content-split">
+        <div class="main-body">
+          <div class="lead-box anim-item">
+            يعتمد الاتصال المعزز بالبيانات على تحليل مؤشرات الأداء المرتبطة بعمليات الاتصال، واستخدامها في تقييم كفاءتها وتطويرها.
+          </div>
+
+          <div class="sec-label anim-item"><i class="fa-solid fa-gauge-high"></i> أهم مؤشرات القياس:</div>
+          <table class="styled-table">
+            <thead>
+              <tr class="anim-item">
+                <th style="width:36%;">المؤشر</th>
+                <th>ما الذي يقيسه؟</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="anim-item"><td><i class="fa-solid fa-stopwatch" style="margin-left:6px;"></i>زمن الاستجابة</td><td>الوقت المستغرق للرد على الاستفسار</td></tr>
+              <tr class="anim-item"><td><i class="fa-solid fa-circle-check" style="margin-left:6px;"></i>معدل حل الاستفسارات</td><td>نسبة الاستفسارات التي تمت معالجتها</td></tr>
+              <tr class="anim-item"><td><i class="fa-solid fa-hand-pointer" style="margin-left:6px;"></i>معدل التفاعل</td><td>مدى تفاعل المستفيدين مع الرسائل</td></tr>
+              <tr class="anim-item"><td><i class="fa-solid fa-star" style="margin-left:6px;"></i>مستوى الرضا</td><td>تقييم المستفيدين لجودة الاتصال</td></tr>
+              <tr class="anim-item"><td><i class="fa-solid fa-rotate" style="margin-left:6px;"></i>معدل تكرار الشكاوى</td><td>تكرار المشكلة نفسها</td></tr>
+              <tr class="anim-item"><td><i class="fa-solid fa-paper-plane" style="margin-left:6px;"></i>الوصول إلى الرسائل</td><td>مدى وصول الرسائل إلى الفئات المستهدفة</td></tr>
+            </tbody>
+          </table>
+
+          <div class="callout-box anim-item">
+            <strong><i class="fa-solid fa-gem"></i> القيمة المضافة: </strong>
+            الانتقال من الانطباعات الشخصية إلى التقييم القائم على الأدلة والمؤشرات.
+          </div>
+        </div>
+
+        <div class="visual-side anim-item">
+          <div class="asset-frame circle" title="Assets/14.jpg" style="width: 265px; height: 500px; border-radius: 22px; transform: scale(1.0);">
+            <img src="Assets/14.jpg" alt="الاتصال المعزز بالبيانات" onerror="this.style.display='none'">
+            <div class="asset-fallback"><i class="fa-solid fa-chart-pie"></i><span>Assets/14.jpg</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         الشريحة 15: 8- الحوكمة الرقمية والاتصال المسؤول (Assets/15.jpg)
+    ====================================================================== -->
+    <section class="slide" data-title="15. الاتجاهات الحديثة: 8- الحوكمة الرقمية والاتصال المسؤول">
+      <div>
+        <div class="eyebrow anim-item">الاتجاهات الحديثة في الاتصال الإداري • الشريحة 15</div>
+        <h2 class="slide-title anim-item">8- الحوكمة الرقمية والاتصال المسؤول</h2>
+      </div>
+
+      <div class="content-split">
+        <div class="main-body">
+          <div class="lead-box anim-item">
+            يقصد بالحوكمة الرقمية والاتصال المسؤول وضع القواعد والسياسات والإجراءات التي تنظم استخدام تطبيقات الذكاء الاصطناعي في الاتصال المؤسسي، بما يضمن الاستخدام المسؤول والآمن والفعال.
+          </div>
+
+          <div class="sec-label anim-item"><i class="fa-solid fa-shield-halved"></i> المتطلبات الأساسية:</div>
+          <div class="items-grid-4">
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-sitemap"></i></div><div class="mini-text"><strong>الحوكمة التنظيمية:</strong>تحديد المسؤوليات والصلاحيات.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-database"></i></div><div class="mini-text"><strong>حوكمة البيانات:</strong>ضمان جودة البيانات وحمايتها.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-eye"></i></div><div class="mini-text"><strong>الشفافية:</strong>توضيح دور الذكاء الاصطناعي في إنتاج المحتوى.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-user-check"></i></div><div class="mini-text"><strong>المساءلة:</strong>تحديد الجهة المسؤولة عن اعتماد الرسائل والمخرجات.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-user-shield"></i></div><div class="mini-text"><strong>الإشراف البشري:</strong>مراجعة المحتوى والقرارات ذات التأثير المؤسسي.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-lock"></i></div><div class="mini-text"><strong>الأمن السيبراني:</strong>حماية الأنظمة من الاختراق والتلاعب.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-scale-balanced"></i></div><div class="mini-text"><strong>العدالة والشمول:</strong>ضمان عدم التمييز بين المستفيدين.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-arrows-rotate"></i></div><div class="mini-text"><strong>التقييم المستمر:</strong>قياس جودة التطبيقات ومراجعة نتائجها.</div></div>
+          </div>
+
+          <div class="callout-box anim-item">
+            <strong><i class="fa-solid fa-gavel"></i> قاعدة أساسية: </strong>
+            لا يُعتمد أي محتوى أو قرار إداري ذي أثر رسمي لمجرد إنتاجه بواسطة أداة ذكاء اصطناعي.
+          </div>
+        </div>
+
+        <div class="visual-side anim-item">
+          <div class="asset-frame" title="Assets/15.jpg" style="width: 265px; height: 550px; transform: scale(1.0);">
+            <img src="Assets/15.jpg" alt="الحوكمة الرقمية والاتصال المسؤول" onerror="this.style.display='none'">
+            <div class="asset-fallback"><i class="fa-solid fa-scale-balanced"></i><span>Assets/15.jpg</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         الشريحة 16: الاتجاهات العالمية في الاتصال الجامعي (Assets/16.jpg)
+    ====================================================================== -->
+    <section class="slide" data-title="16. الاتجاهات العالمية في الاتصال الجامعي">
+      <div>
+        <div class="eyebrow anim-item">المشهد الدولي • الشريحة 16</div>
+        <h2 class="slide-title anim-item">الاتجاهات العالمية في الاتصال الجامعي</h2>
+      </div>
+
+      <div class="content-split">
+        <div class="main-body">
+          <div class="lead-box anim-item">
+            تشير التحولات الرقمية في مؤسسات التعليم العالي إلى تنامي الاهتمام بعدد من الاتجاهات التي تعيد تشكيل الاتصال الجامعي، ومن أبرزها:
+          </div>
+
+          <div class="items-grid-3">
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div><div class="mini-text"><strong>الاتصال التوليدي:</strong>استخدام الذكاء الاصطناعي في إنتاج المحتوى الجامعي.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-share-nodes"></i></div><div class="mini-text"><strong>الاتصال متعدد القنوات:</strong>تكامل المواقع والتطبيقات والبريد الإلكتروني والمنصات.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-robot"></i></div><div class="mini-text"><strong>المساعدات الافتراضية:</strong>تقديم الدعم والإرشاد للمستفيدين.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-user-tag"></i></div><div class="mini-text"><strong>الاتصال الشخصي:</strong>تخصيص الرسائل وفق احتياجات الفئات الجامعية.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-bell"></i></div><div class="mini-text"><strong>الاتصال الاستباقي:</strong>توقع احتياجات الطلاب والعاملين.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-route"></i></div><div class="mini-text"><strong>إدارة تجربة الطالب:</strong>تحسين رحلة الطالب من التقديم حتى التخرج.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-language"></i></div><div class="mini-text"><strong>الاتصال متعدد اللغات:</strong>دعم التواصل مع الطلاب الدوليين والوافدين.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-chart-line"></i></div><div class="mini-text"><strong>الاتصال القائم على البيانات:</strong>استخدام مؤشرات الأداء في تحسين الخدمات.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-shield-halved"></i></div><div class="mini-text"><strong>الاتصال المسؤول:</strong>ضمان الخصوصية والشفافية والمساءلة.</div></div>
+          </div>
+        </div>
+
+        <div class="visual-side anim-item">
+          <div class="asset-frame circle" title="Assets/16.jpg" style="width: 265px; height: 500px; border-radius: 22px; transform: scale(1.0);">
+            <img src="Assets/16.jpg" alt="الاتجاهات العالمية في الاتصال الجامعي" onerror="this.style.display='none'">
+            <div class="asset-fallback"><i class="fa-solid fa-globe"></i><span>Assets/16.jpg</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         الشريحة 17: نماذج وتجارب جامعية عالمية (Assets/17.jpg)
+    ====================================================================== -->
+    <section class="slide" data-title="17. نماذج وتجارب جامعية عالمية">
+      <div>
+        <div class="eyebrow anim-item">المقارنة المرجعية • الشريحة 17</div>
+        <h2 class="slide-title anim-item">نماذج وتجارب جامعية عالمية</h2>
+      </div>
+
+      <div class="content-split">
+        <div class="main-body">
+          <div class="lead-box anim-item" style="padding:0.45rem 0.9rem;">
+            يمكن الاستفادة من عدد من النماذج والتجارب الجامعية في دراسة توظيف التقنيات الذكية في الاتصال والخدمات الجامعية.
+          </div>
+
+          <div class="items-grid-2">
+            <div class="stage-card anim-item">
+              <div class="stage-title"><i class="fa-solid fa-university" style="color:var(--pal-purple);margin-left:5px;"></i>جامعة نورثهامبتون – المملكة المتحدة</div>
+              <p class="stage-desc">ارتبطت بها تجربة المساعد الافتراضي المرئي المعروف باسم NORA، الذي يُطرح نموذجًا لتوظيف الواجهات الحوارية والمرئية في تقديم المعلومات والإرشاد.</p>
+              <p class="stage-desc" style="color:var(--pal-rust);font-weight:700;">مجال الاستفادة: تطوير المساعدات الافتراضية التي تساعد الطلاب في الوصول إلى المعلومات والخدمات.</p>
+            </div>
+
+            <div class="stage-card anim-item">
+              <div class="stage-title"><i class="fa-solid fa-university" style="color:var(--pal-rust);margin-left:5px;"></i>جامعة ليستر – المملكة المتحدة</div>
+              <p class="stage-desc">يمكن تناول توجهات تطوير الخدمات الرقمية وإدارة علاقات المستفيدين في المؤسسات الجامعية بوصفها مدخلًا لفهم أهمية تكامل قنوات الاتصال وتحسين تجربة المستفيد.</p>
+              <p class="stage-desc" style="color:var(--pal-rust);font-weight:700;">مجال الاستفادة: بناء منظومة اتصال موحدة تربط المستفيد بالخدمات والجهات المختصة.</p>
+            </div>
+
+            <div class="stage-card anim-item">
+              <div class="stage-title"><i class="fa-solid fa-university" style="color:var(--pal-blue);margin-left:5px;"></i>الجامعات الألمانية</div>
+              <p class="stage-desc">تناولت دراسات حديثة استخدام الذكاء الاصطناعي التوليدي في سياقات الاتصال الجامعي وإنتاج المحتوى، بما يبرز أهمية دراسة أثر هذه الأدوات في الممارسات الاتصالية داخل مؤسسات التعليم العالي.</p>
+              <p class="stage-desc" style="color:var(--pal-rust);font-weight:700;">مجال الاستفادة: تطوير مهارات العاملين في إعداد المحتوى الإداري مع وضع ضوابط للمراجعة والتحقق.</p>
+            </div>
+
+            <div class="stage-card anim-item">
+              <div class="stage-title"><i class="fa-solid fa-globe" style="color:var(--pal-purple);margin-left:5px;"></i>الجامعات الدولية ومؤسسات التعليم العالي</div>
+              <p class="stage-desc">تتزايد أهمية المساعدات الحوارية، وتحليل البيانات، وتكامل الخدمات الرقمية، وتحسين تجربة الطالب في مؤسسات التعليم العالي.</p>
+            </div>
+          </div>
+
+          <div class="callout-box anim-item" style="padding:0.5rem 0.9rem;font-size:0.9rem;">
+            <strong><i class="fa-solid fa-circle-info"></i> ملاحظة توثيقية: </strong>
+            تُعرض هذه النماذج باعتبارها أمثلة للاستفادة والدراسة، وليس باعتبارها دليلًا على تطبيق جميع الجامعات لهذه التقنيات على نطاق شامل. وينبغي التحقق من أحدث تفاصيل كل تجربة ومصدرها قبل النشر أو التوثيق النهائي.
+          </div>
+        </div>
+
+        <div class="visual-side anim-item">
+          <div class="asset-frame" title="Assets/17.jpg" style="width: 265px; height: 500px; transform: scale(1.0);">
+            <img src="Assets/17.jpg" alt="نماذج وتجارب جامعية عالمية" onerror="this.style.display='none'">
+            <div class="asset-fallback"><i class="fa-solid fa-building-columns"></i><span>Assets/17.jpg</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         الشريحة 18: إدارة تجربة الطالب والاتصال الاستباقي (Assets/18.jpg)
+    ====================================================================== -->
+    <section class="slide" data-title="18. إدارة تجربة الطالب والاتصال الاستباقي">
+      <div>
+        <div class="eyebrow anim-item">رحلة المستفيد • الشريحة 18</div>
+        <h2 class="slide-title anim-item">إدارة تجربة الطالب والاتصال الاستباقي</h2>
+      </div>
+
+      <div class="content-split">
+        <div class="main-body">
+          <div class="lead-box anim-item">
+            أصبحت تجربة الطالب أحد المحاور المهمة لتطوير الاتصال الجامعي؛ إذ لم يعد دور الجامعة مقتصرًا على إتاحة المعلومات، بل امتد إلى تقديم تجربة متكاملة وسهلة في التعامل مع الخدمات الجامعية.
+          </div>
+
+          <div class="sec-label anim-item"><i class="fa-solid fa-route"></i> مراحل رحلة الطالب:</div>
+          <div class="timeline-row-6">
+            <div class="stage-card anim-item"><span class="stage-badge">01</span><div class="stage-title">مرحلة التعرف على الجامعة والتقديم.</div></div>
+            <div class="stage-card anim-item"><span class="stage-badge">02</span><div class="stage-title">مرحلة القبول والتسجيل.</div></div>
+            <div class="stage-card anim-item"><span class="stage-badge">03</span><div class="stage-title">مرحلة الدراسة والخدمات الأكاديمية.</div></div>
+            <div class="stage-card anim-item"><span class="stage-badge">04</span><div class="stage-title">مرحلة الأنشطة والدعم الطلابي.</div></div>
+            <div class="stage-card anim-item"><span class="stage-badge">05</span><div class="stage-title">مرحلة التخرج.</div></div>
+            <div class="stage-card anim-item"><span class="stage-badge">06</span><div class="stage-title">مرحلة التواصل مع الخريجين.</div></div>
+          </div>
+
+          <div class="sec-label anim-item"><i class="fa-solid fa-robot"></i> دور الذكاء الاصطناعي:</div>
+          <div class="items-grid-3">
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-compass"></i></div><div class="mini-text">تقديم الإرشاد الأولي.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-bell"></i></div><div class="mini-text">إرسال التنبيهات والمواعيد.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-list-ol"></i></div><div class="mini-text">توضيح الإجراءات.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-comments"></i></div><div class="mini-text">الإجابة عن الاستفسارات المتكررة.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-chart-simple"></i></div><div class="mini-text">تحليل التغذية الراجعة.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-signs-post"></i></div><div class="mini-text">توجيه الطالب إلى الجهة المختصة.</div></div>
+          </div>
+
+          <div class="callout-box anim-item">
+            <strong><i class="fa-solid fa-bullseye"></i> الهدف: </strong>
+            بناء تجربة جامعية أكثر سهولة ووضوحًا واستجابة لاحتياجات الطلاب.
+          </div>
+        </div>
+
+        <div class="visual-side anim-item">
+          <div class="asset-frame circle" title="Assets/18.jpg" style="width: 265px; height: 265px; transform: scale(1.0);">
+            <img src="Assets/18.jpg" alt="إدارة تجربة الطالب" onerror="this.style.display='none'">
+            <div class="asset-fallback"><i class="fa-solid fa-user-graduate"></i><span>Assets/18.jpg</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         الشريحة 19: تطبيقات الاتصال الذكي في جامعة الأزهر (Assets/19.jpg)
+    ====================================================================== -->
+    <section class="slide" data-title="19. تطبيقات الاتصال الذكي في جامعة الأزهر">
+      <div>
+        <div class="eyebrow anim-item">التطبيق المؤسسي • الشريحة 19</div>
+        <h2 class="slide-title anim-item">تطبيقات الاتصال الذكي في جامعة الأزهر</h2>
+      </div>
+
+      <div class="content-split">
+        <div class="main-body">
+          <div class="lead-box anim-item">
+            يمكن توظيف الذكاء الاصطناعي في تطوير الاتصال الإداري بجامعة الأزهر من خلال عدد من التطبيقات المقترحة:
+          </div>
+
+          <div class="items-grid-2">
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-headset"></i></div><div class="mini-text"><strong>المساعد الإداري الذكي:</strong>منصة افتراضية للإجابة عن استفسارات الطلاب والعاملين وأعضاء هيئة التدريس.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-file-invoice"></i></div><div class="mini-text"><strong>منظومة التعاميم الذكية:</strong>إعداد التعاميم الإدارية وتصنيفها وتوجيهها إلى الجهات المعنية.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-book-bookmark"></i></div><div class="mini-text"><strong>قاعدة المعرفة المؤسسية:</strong>مستودع رقمي موحد للقرارات واللوائح والأدلة والإجراءات المعتمدة.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div><div class="mini-text"><strong>نظام تحليل الشكاوى والمقترحات:</strong>تصنيف الشكاوى وتحليل تكرارها وإعداد تقارير دورية بشأنها.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-earth-asia"></i></div><div class="mini-text"><strong>الاتصال الذكي بالطلاب الوافدين:</strong>تقديم المعلومات والإرشادات بلغات متعددة، وفق احتياجات الطلاب.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-gauge"></i></div><div class="mini-text"><strong>لوحة متابعة الاتصال الإداري:</strong>قياس زمن الاستجابة ومعدلات الإنجاز ورضا المستفيدين.</div></div>
+            <div class="mini-card anim-item" style="grid-column: span 2;"><div class="mini-icon"><i class="fa-solid fa-bell"></i></div><div class="mini-text"><strong>نظام التنبيهات الاستباقية:</strong>إرسال تنبيهات بشأن المواعيد والإجراءات والخدمات المهمة.</div></div>
+          </div>
+        </div>
+
+        <div class="visual-side anim-item">
+          <div class="asset-frame" title="Assets/19.jpg" style="width: 265px; height: 500px; transform: scale(1.0);">
+            <img src="Assets/19.jpg" alt="تطبيقات الاتصال الذكي في جامعة الأزهر" onerror="this.style.display='none'">
+            <div class="asset-fallback"><i class="fa-solid fa-landmark"></i><span>Assets/19.jpg</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         الشريحة 20: نموذج تطبيقي – تعميم إداري ذكي (Assets/20.jpg)
+    ====================================================================== -->
+    <section class="slide" data-title="20. نموذج تطبيقي – تعميم إداري ذكي">
+      <div>
+        <div class="eyebrow anim-item">دراسة حالة عملية • الشريحة 20</div>
+        <h2 class="slide-title anim-item">نموذج تطبيقي – تعميم إداري ذكي</h2>
+      </div>
+
+      <div class="content-split">
+        <div class="main-body">
+          <div class="lead-box anim-item">
+            <strong style="color:var(--pal-purple);font-family:'Cairo',sans-serif;">الموقف: </strong>
+            إصدار تعميم إداري يتعلق بإجراء جديد داخل الجامعة.
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;">
+            <div class="stage-card anim-item">
+              <span class="stage-badge"><i class="fa-solid fa-pen-to-square"></i> المرحلة الأولى</span>
+              <div class="stage-title">قبل نشر التعميم:</div>
+              <ul class="stage-list">
+                <li>إعداد مسودة التعميم.</li>
+                <li>استخدام الذكاء الاصطناعي لتحسين الصياغة.</li>
+                <li>مراجعة البيانات والتعليمات.</li>
+                <li>تحديد الإدارات والفئات المستهدفة.</li>
+                <li>اعتماد التعميم من صاحب الصلاحية.</li>
+              </ul>
+            </div>
+
+            <div class="stage-card anim-item">
+              <span class="stage-badge"><i class="fa-solid fa-paper-plane"></i> المرحلة الثانية</span>
+              <div class="stage-title">أثناء النشر:</div>
+              <ul class="stage-list">
+                <li>توجيه التعميم إلى الجهات المعنية.</li>
+                <li>إرساله عبر القنوات الرسمية.</li>
+                <li>توفير نسخة قابلة للبحث والرجوع إليها.</li>
+                <li>إتاحة الأسئلة الشائعة المرتبطة به.</li>
+              </ul>
+            </div>
+
+            <div class="stage-card anim-item">
+              <span class="stage-badge"><i class="fa-solid fa-chart-line"></i> المرحلة الثالثة</span>
+              <div class="stage-title">بعد النشر:</div>
+              <ul class="stage-list">
+                <li>رصد وصول التعميم.</li>
+                <li>تحليل الاستفسارات الواردة.</li>
+                <li>تحديد النقاط غير الواضحة.</li>
+                <li>إصدار توضيحات عند الحاجة.</li>
+                <li>قياس مستوى الالتزام والتنفيذ.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="callout-box anim-item">
+            <strong><i class="fa-solid fa-circle-check"></i> النتيجة المتوقعة: </strong>
+            تحسين دقة الاتصال، وتقليل تضارب التعليمات، ورفع سرعة الاستجابة.
+          </div>
+        </div>
+
+        <div class="visual-side anim-item">
+          <div class="asset-frame circle" title="Assets/20.jpg" style="width: 265px; height: 500px; border-radius: 22px; transform: scale(1.0);">
+            <img src="Assets/20.jpg" alt="نموذج تطبيقي تعميم إداري ذكي" onerror="this.style.display='none'">
+            <div class="asset-fallback"><i class="fa-solid fa-file-circle-check"></i><span>Assets/20.jpg</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         الشريحة 21: تحديات توظيف الذكاء الاصطناعي في الاتصال الإداري (Assets/21.jpg)
+    ====================================================================== -->
+    <section class="slide" data-title="21. تحديات توظيف الذكاء الاصطناعي في الاتصال الإداري">
+      <div>
+        <div class="eyebrow anim-item">المعوقات والمخاطر • الشريحة 21</div>
+        <h2 class="slide-title anim-item">تحديات توظيف الذكاء الاصطناعي في الاتصال الإداري</h2>
+      </div>
+
+      <div class="content-split">
+        <div class="main-body">
+          <div class="lead-box anim-item">
+            رغم الفرص الكبيرة التي يتيحها الذكاء الاصطناعي، فإن تطبيقه يواجه مجموعة من التحديات:
+          </div>
+
+          <div class="items-grid-2">
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-server"></i></div><div class="mini-text"><strong>تحديات تقنية:</strong>ضعف البنية التحتية الرقمية، وعدم تكامل الأنظمة، ومشكلات جودة البيانات.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-users-slash"></i></div><div class="mini-text"><strong>تحديات بشرية:</strong>نقص المهارات الرقمية، ومقاومة التغيير، وضعف الثقة في الأنظمة الذكية.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-scale-unbalanced"></i></div><div class="mini-text"><strong>تحديات أخلاقية:</strong>التحيز في معالجة البيانات، وانتهاك الخصوصية، وغياب الشفافية في بعض التطبيقات.</div></div>
+            <div class="mini-card anim-item"><div class="mini-icon"><i class="fa-solid fa-circle-exclamation"></i></div><div class="mini-text"><strong>تحديات معلوماتية:</strong>احتمال إنتاج معلومات غير دقيقة، وصعوبة التحقق من بعض المخرجات، والاعتماد المفرط على المحتوى المولد آليًا.</div></div>
+            <div class="mini-card anim-item" style="grid-column: span 2;"><div class="mini-icon"><i class="fa-solid fa-sitemap"></i></div><div class="mini-text"><strong>تحديات تنظيمية:</strong>غياب السياسات المنظمة، وعدم وضوح المسؤوليات، وتضارب مصادر المعلومات.</div></div>
+          </div>
+        </div>
+
+        <div class="visual-side anim-item">
+          <div class="asset-frame" title="Assets/21.jpg" style="width: 265px; height: 500px; transform: scale(1.0);">
+            <img src="Assets/21.jpg" alt="تحديات توظيف الذكاء الاصطناعي" onerror="this.style.display='none'">
+            <div class="asset-fallback"><i class="fa-solid fa-triangle-exclamation"></i><span>Assets/21.jpg</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         الشريحة 22: خارطة طريق للتحول نحو الاتصال الإداري الذكي (Assets/22.jpg)
+    ====================================================================== -->
+    <section class="slide" data-title="22. خارطة طريق للتحول نحو الاتصال الإداري الذكي">
+      <div>
+        <div class="eyebrow anim-item">التنفيذ المرحلي • الشريحة 22</div>
+        <h2 class="slide-title anim-item">خارطة طريق للتحول نحو الاتصال الإداري الذكي</h2>
+      </div>
+
+      <div class="content-split">
+        <div class="main-body">
+          <div class="lead-box anim-item">
+            يمكن بناء خارطة طريق تدريجية للتحول نحو الاتصال الإداري الذكي وفق المراحل الآتية:
+          </div>
+
+          <div class="timeline-row-5">
+            <div class="stage-card anim-item">
+              <span class="stage-badge"><i class="fa-solid fa-stethoscope"></i> 01</span>
+              <div class="stage-title">المرحلة الأولى: التشخيص والتقييم</div>
+              <ul class="stage-list">
+                <li>تحليل واقع الاتصال الإداري.</li>
+                <li>تحديد الاحتياجات والفجوات الرقمية.</li>
+                <li>حصر قنوات الاتصال الحالية.</li>
+              </ul>
+            </div>
+
+            <div class="stage-card anim-item">
+              <span class="stage-badge"><i class="fa-solid fa-flask"></i> 02</span>
+              <div class="stage-title">المرحلة الثانية: التخطيط والتجريب</div>
+              <ul class="stage-list">
+                <li>اختيار التطبيقات ذات الأولوية.</li>
+                <li>تنفيذ مشروعات تجريبية محدودة.</li>
+                <li>تحديد مؤشرات قياس الأداء.</li>
+              </ul>
+            </div>
+
+            <div class="stage-card anim-item">
+              <span class="stage-badge"><i class="fa-solid fa-chalkboard-user"></i> 03</span>
+              <div class="stage-title">المرحلة الثالثة: بناء القدرات</div>
+              <ul class="stage-list">
+                <li>تدريب القيادات والعاملين.</li>
+                <li>تنمية المهارات الرقمية.</li>
+                <li>نشر ثقافة الاستخدام المسؤول للذكاء الاصطناعي.</li>
+              </ul>
+            </div>
+
+            <div class="stage-card anim-item">
+              <span class="stage-badge"><i class="fa-solid fa-shield-halved"></i> 04</span>
+              <div class="stage-title">المرحلة الرابعة: الحوكمة والتكامل</div>
+              <ul class="stage-list">
+                <li>إعداد السياسات المنظمة.</li>
+                <li>تطوير قواعد البيانات.</li>
+                <li>ربط الأنظمة والقنوات الرقمية.</li>
+              </ul>
+            </div>
+
+            <div class="stage-card anim-item">
+              <span class="stage-badge"><i class="fa-solid fa-expand"></i> 05</span>
+              <div class="stage-title">المرحلة الخامسة: التوسع والتقويم</div>
+              <ul class="stage-list">
+                <li>تعميم التطبيقات الناجحة تدريجيًا.</li>
+                <li>متابعة مؤشرات الأداء.</li>
+                <li>قياس رضا المستفيدين.</li>
+                <li>تطوير التطبيقات وفق نتائج التقييم.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="visual-side anim-item">
+          <div class="asset-frame circle" title="Assets/22.jpg" style="width: 265px; height: 500px; border-radius: 22px; transform: scale(1.0);">
+            <img src="Assets/22.jpg" alt="خارطة طريق للتحول" onerror="this.style.display='none'">
+            <div class="asset-fallback"><i class="fa-solid fa-road"></i><span>Assets/22.jpg</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         الشريحة 23: توصيات لتطوير الاتصال الإداري بجامعة الأزهر (Assets/23.jpg)
+    ====================================================================== -->
+    <section class="slide" data-title="23. توصيات لتطوير الاتصال الإداري بجامعة الأزهر">
+      <div>
+        <div class="eyebrow anim-item">الرؤية المقترحة • الشريحة 23</div>
+        <h2 class="slide-title anim-item">توصيات لتطوير الاتصال الإداري بجامعة الأزهر</h2>
+      </div>
+
+      <div class="content-split">
+        <div class="main-body">
+          <div class="sec-label anim-item"><i class="fa-solid fa-lightbulb"></i> في ضوء الاتجاهات الحديثة، يمكن اقتراح ما يأتي:</div>
+
+          <div class="items-grid-3" style="gap:0.45rem;">
+            <div class="mini-card anim-item" style="padding:0.45rem 0.65rem;"><div class="mini-icon" style="width:28px;height:28px;font-size:0.86rem;">1</div><div class="mini-text" style="font-size:0.92rem;line-height:1.35;"><i class="fa-solid fa-chess" style="color:var(--pal-purple);margin-left:4px;"></i>وضع استراتيجية مؤسسية لتطوير الاتصال الإداري في ضوء تطبيقات الذكاء الاصطناعي.</div></div>
+            <div class="mini-card anim-item" style="padding:0.45rem 0.65rem;"><div class="mini-icon" style="width:28px;height:28px;font-size:0.86rem;">2</div><div class="mini-text" style="font-size:0.92rem;line-height:1.35;"><i class="fa-solid fa-database" style="color:var(--pal-rust);margin-left:4px;"></i>إنشاء قاعدة معرفة رقمية موحدة للقرارات واللوائح والإجراءات الجامعية.</div></div>
+            <div class="mini-card anim-item" style="padding:0.45rem 0.65rem;"><div class="mini-icon" style="width:28px;height:28px;font-size:0.86rem;">3</div><div class="mini-text" style="font-size:0.92rem;line-height:1.35;"><i class="fa-solid fa-robot" style="color:var(--pal-purple);margin-left:4px;"></i>تطوير مساعد افتراضي ذكي لتقديم الخدمات والإجابة عن الاستفسارات.</div></div>
+            <div class="mini-card anim-item" style="padding:0.45rem 0.65rem;"><div class="mini-icon" style="width:28px;height:28px;font-size:0.86rem;">4</div><div class="mini-text" style="font-size:0.92rem;line-height:1.35;"><i class="fa-solid fa-pen-nib" style="color:var(--pal-rust);margin-left:4px;"></i>توظيف أدوات الذكاء الاصطناعي في إعداد مسودات المكاتبات والتقارير والتعاميم.</div></div>
+            <div class="mini-card anim-item" style="padding:0.45rem 0.65rem;"><div class="mini-icon" style="width:28px;height:28px;font-size:0.86rem;">5</div><div class="mini-text" style="font-size:0.92rem;line-height:1.35;"><i class="fa-solid fa-comments" style="color:var(--pal-purple);margin-left:4px;"></i>تطوير منظومة متكاملة لإدارة الشكاوى والمقترحات والتغذية الراجعة.</div></div>
+            <div class="mini-card anim-item" style="padding:0.45rem 0.65rem;"><div class="mini-icon" style="width:28px;height:28px;font-size:0.86rem;">6</div><div class="mini-text" style="font-size:0.92rem;line-height:1.35;"><i class="fa-solid fa-chalkboard-user" style="color:var(--pal-rust);margin-left:4px;"></i>تدريب القيادات الأكاديمية والإدارية والعاملين على مهارات الاتصال الذكي.</div></div>
+            <div class="mini-card anim-item" style="padding:0.45rem 0.65rem;"><div class="mini-icon" style="width:28px;height:28px;font-size:0.86rem;">7</div><div class="mini-text" style="font-size:0.92rem;line-height:1.35;"><i class="fa-solid fa-share-nodes" style="color:var(--pal-purple);margin-left:4px;"></i>توفير قنوات اتصال رقمية متعددة تراعي طبيعة الكليات والقطاعات المختلفة.</div></div>
+            <div class="mini-card anim-item" style="padding:0.45rem 0.65rem;"><div class="mini-icon" style="width:28px;height:28px;font-size:0.86rem;">8</div><div class="mini-text" style="font-size:0.92rem;line-height:1.35;"><i class="fa-solid fa-language" style="color:var(--pal-rust);margin-left:4px;"></i>تطوير خدمات الاتصال متعددة اللغات لدعم الطلاب الوافدين.</div></div>
+            <div class="mini-card anim-item" style="padding:0.45rem 0.65rem;"><div class="mini-icon" style="width:28px;height:28px;font-size:0.86rem;">9</div><div class="mini-text" style="font-size:0.92rem;line-height:1.35;"><i class="fa-solid fa-shield-halved" style="color:var(--pal-purple);margin-left:4px;"></i>إعداد سياسة واضحة لحماية البيانات والخصوصية وتنظيم استخدام أدوات الذكاء الاصطناعي.</div></div>
+            <div class="mini-card anim-item" style="padding:0.45rem 0.65rem;"><div class="mini-icon" style="width:28px;height:28px;font-size:0.86rem;">10</div><div class="mini-text" style="font-size:0.92rem;line-height:1.35;"><i class="fa-solid fa-gauge-high" style="color:var(--pal-rust);margin-left:4px;"></i>إنشاء مؤشرات لقياس جودة الاتصال الإداري وفاعليته.</div></div>
+            <div class="mini-card anim-item" style="padding:0.45rem 0.65rem;"><div class="mini-icon" style="width:28px;height:28px;font-size:0.86rem;">11</div><div class="mini-text" style="font-size:0.92rem;line-height:1.35;"><i class="fa-solid fa-diagram-project" style="color:var(--pal-purple);margin-left:4px;"></i>تعزيز التكامل بين الإدارات المركزية والكليات والقطاعات الجامعية.</div></div>
+            <div class="mini-card anim-item" style="padding:0.45rem 0.65rem;"><div class="mini-icon" style="width:28px;height:28px;font-size:0.86rem;">12</div><div class="mini-text" style="font-size:0.92rem;line-height:1.35;"><i class="fa-solid fa-flask" style="color:var(--pal-rust);margin-left:4px;"></i>تطبيق مشروعات تجريبية وتقييم نتائجها قبل التوسع في تعميمها.</div></div>
+          </div>
+        </div>
+
+        <div class="visual-side anim-item">
+          <div class="asset-frame" title="Assets/23.jpg" style="width: 265px; height: 265px; border-radius: 500px; transform: scale(1.0);">
+            <img src="Assets/23.jpg" alt="توصيات لتطوير الاتصال الإداري" onerror="this.style.display='none'">
+            <div class="asset-fallback"><i class="fa-solid fa-list-check"></i><span>Assets/23.jpg</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         الشريحة الختامية (SLIDE 24)
+    ====================================================================== -->
+    <section class="slide" data-title="الشريحة الختامية: شكرًا لكم على حسن استماعكم">
+      <div class="closing-box anim-item">
+        <div class="closing-icon">
+          <i class="fa-solid fa-hands-clapping"></i>
+        </div>
+        <p class="closing-text">
+          <span class="highlight-gold">شكرًا لكم على حسن استماعكم</span>
+        </p>
+        <div style="margin-top: 2rem; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <button class="nav-btn" style="padding: 10px 22px; font-size: 1rem; border-color: var(--pal-purple);" onclick="goToSlide(0)">
+            إعادة العرض من البداية ↺
+          </button>
+          <button class="nav-btn" style="padding: 10px 22px; font-size: 1rem;" onclick="toggleOverview()">
+            استعراض فهرس الشرائح ⊞
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTROLS BAR -->
+    <footer class="controls-bar" id="controls-bar">
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+
+      <div class="nav-group">
+        <button class="nav-btn" id="prev-btn" title="الشريحة السابقة (السهم الأيمن أو P)">→السابق</button>
+        <span class="slide-counter" id="slide-counter">1 / 25</span>
+        <button class="nav-btn" id="next-btn" title="الشريحة التالية (السهم الأيسر أو N)">التــالي←</button>
+      </div>
+
+<!-- زر تأثيرات الانتقال بنفس تصميم باقي الأزرار -->
+
+<div class="autoplay-group" aria-label="التشغيل التلقائي للشرائح">
+        <button type="button" class="nav-btn autoplay-btn" id="autoplay-toggle-btn" title="تفعيل/إيقاف التشغيل التلقائي (A)">
+          <i class="fa-solid fa-play" id="autoplay-icon" aria-hidden="true"></i>
+					</span>تلقائي (P)</span>
+        </button>
+        <select class="nav-btn autoplay-select" id="autoplay-interval-select" aria-label="مدة التوقف بين الشرائح" title="مدة التوقف بين الشرائح">
+          <option value="3000">3ث</option>
+          <option value="5000" selected>5ث</option>
+          <option value="10000">10ث</option>
+          <option value="15000">15ث</option>
+        </select>
+      </div>
+
+   <div id="transition-picker-wrap" style="display: inline-flex; align-items: center; gap: 6px; margin-inline-start: 6px;">
+
+    <select class="nav-btn transition-select" id="transition-effect-select" aria-label="اختيار تأثير الانتقال" title="تبديل تأثيرات الانتقال بين الشرائح"></select>
+
+     <div class="nav-group">
+        <button class="nav-btn" id="btn-16-9" onclick="setAspectRatio('16:9')" title="وضع العرض العريض 16:9 (W)">▭ 16:9 (W)</button>
+        <button class="nav-btn active" id="btn-4-3" onclick="setAspectRatio('4:3')" title="وضع العرض التقليدي 4:3 (S)">▢ 4:3 (S)</button>
+        <button class="nav-btn" onclick="replayCurrentSlide()" title="إعادة تشغيل الشريحة الحالية (R)">↺ (R)</button>
+        <button class="nav-btn" onclick="toggleOverview()" title="استعراض فهرس الشرائح (O)">⊞ (O)</button>
+        <button class="nav-btn" onclick="toggleFullscreen()" title="ملء الشاشة (F)">⤢ (F)</button>
+
+<div class="info-icon-group" role="group" aria-label="معلومات ومساعدة">
+    <button type="button" class="info-circle-btn help-btn" id="open-help-modal-btn" title="دليل الاستخدام" aria-label="مساعدة">
+      <i class="fa-solid fa-question" aria-hidden="true"></i>
+    </button>
+
+    <button type="button" class="info-circle-btn about-btn" id="open-about-modal-btn" title="عن البرنامج" aria-label="عن البرنامج">
+      <i class="fa-solid fa-info" aria-hidden="true"></i>
+    </button>
+
+
+      </div>
+    </footer>
+
+    <!-- OVERVIEW MODAL -->
+    <div id="overview-modal" role="dialog" aria-label="فهرس الشرائح">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 class="slide-title" style="font-size: 1.7rem;">فهرس شرائح العرض التقديمي للمحاضرة</h2>
+        <button class="nav-btn" onclick="toggleOverview()">إغلاق ✕</button>
+      </div>
+      <div class="overview-grid" id="overview-grid"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const deck = document.getElementById('deck');
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const progressFill = document.getElementById('progress-fill');
+  const slideCounter = document.getElementById('slide-counter');
+  const overviewModal = document.getElementById('overview-modal');
+  const overviewGrid = document.getElementById('overview-grid');
+  const controlsBar = document.getElementById('controls-bar');
+
+  let currentSlide = 0;
+  let hideTimer = null;
+  let isWheelLocked = false;
+  let isTransitioning = false;
+
+  let slideNumberBuffer = '';
+  let slideBufferTimer = null;
+
+  function setAspectRatio(ratio) {
+    document.getElementById('btn-16-9').classList.remove('active');
+    document.getElementById('btn-4-3').classList.remove('active');
+
+    if (ratio === '16:9') {
+      deck.className = 'ratio-16-9';
+      document.getElementById('btn-16-9').classList.add('active');
+    } else {
+      deck.className = 'ratio-4-3';
+      document.getElementById('btn-4-3').classList.add('active');
+    }
+  }
+
+  window.addEventListener('wheel', (e) => {
+    if (overviewModal.classList.contains('open')) return;
+    if (isWheelLocked) return;
+
+    isWheelLocked = true;
+    setTimeout(() => { isWheelLocked = false; }, 600);
+
+    if (e.deltaY > 0) {
+      goToSlide(currentSlide + 1);
+    } else if (e.deltaY < 0) {
+      goToSlide(currentSlide - 1);
+    }
+  }, { passive: true });
+
+  function showControls() {
+    if (hideTimer) {
+      clearTimeout(hideTimer);
+      hideTimer = null;
+    }
+    controlsBar.classList.add('visible');
+  }
+
+  function scheduleHideControls() {
+    if (hideTimer) return;
+    hideTimer = setTimeout(() => {
+      controlsBar.classList.remove('visible');
+      hideTimer = null;
+    }, 1500);
+  }
+
+  window.addEventListener('mousemove', (e) => {
+    const rect = deck.getBoundingClientRect();
+    const mouseY = e.clientY - rect.top;
+    const threshold = rect.height - 40;
+
+    if (mouseY >= threshold && mouseY <= rect.height) {
+      showControls();
+    } else {
+      if (controlsBar.classList.contains('visible') && !hideTimer) {
+        scheduleHideControls();
+      }
+    }
+  });
+
+  controlsBar.addEventListener('mouseenter', showControls);
+  controlsBar.addEventListener('mouseleave', scheduleHideControls);
+
+  function animateSlideIn(slideEl) {
+    const items = slideEl.querySelectorAll('.anim-item');
+    gsap.killTweensOf(items);
+    gsap.set(items, { clearProps: "all" });
+    gsap.fromTo(items,
+      { opacity: 0, y: 20, scale: 0.98 },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.42,
+        stagger: 0.08,
+        ease: "power3.out"
+      }
+    );
+  }
+
+(function () {
+  if (typeof gsap === "undefined") return;
+
+  function getTargets(slideEl) {
+    if (!slideEl) return [];
+    const inner = slideEl.querySelectorAll(
+      ":scope > .slide-inner, :scope > .slide-content, :scope > .content-split, :scope > .slide-body, :scope > .cover-content"
+    );
+    if (inner.length > 0) return Array.from(inner);
+
+    const children = Array.from(slideEl.children).filter(function (el) {
+      return !el.classList.contains("controls-bar") && el.id !== "overview-modal";
+    });
+    return children.length > 0 ? children : [slideEl];
+  }
+
+  const CLEAN_PROPS =
+    "transform,opacity,filter,clipPath,x,y,scale,scaleX,scaleY,rotation,rotationX,rotationY,skewX,skewY";
+
+  const TRANSITION_PRESETS = [
+    // --- 1. الستائر (Curtains & Wipes) ---
+    {
+      name: "✦ 1. ستارة أفقية من اليمين",
+      from: { opacity: 0, clipPath: "inset(0% 0% 0% 100%)" },
+      to: { opacity: 1, clipPath: "inset(0% 0% 0% 0%)", duration: 0.75, ease: "power3.inOut" }
+    },
+    {
+      name: "✦ 2. ستارة أفقية من اليسار",
+      from: { opacity: 0, clipPath: "inset(0% 100% 0% 0%)" },
+      to: { opacity: 1, clipPath: "inset(0% 0% 0% 0%)", duration: 0.75, ease: "power3.inOut" }
+    },
+    {
+      name: "✦ 3. ستارة رأسية من الأعلى",
+      from: { opacity: 0, clipPath: "inset(0% 0% 100% 0%)" },
+      to: { opacity: 1, clipPath: "inset(0% 0% 0% 0%)", duration: 0.75, ease: "power3.inOut" }
+    },
+    {
+      name: "✦ 4. ستارة رأسية من الأسفل",
+      from: { opacity: 0, clipPath: "inset(100% 0% 0% 0%)" },
+      to: { opacity: 1, clipPath: "inset(0% 0% 0% 0%)", duration: 0.75, ease: "power3.inOut" }
+    },
+    {
+      name: "✦ 05. انفتاح الستارتين من المنتصف",
+      from: { opacity: 0, clipPath: "inset(0% 50% 0% 50%)" },
+      to: { opacity: 1, clipPath: "inset(0% 0% 0% 0%)", duration: 0.8, ease: "expo.out" }
+    },
+    {
+      name: "✦ 6. انفتاح أفقي من الأعلى والأسفل",
+      from: { opacity: 0, clipPath: "inset(50% 0% 50% 0%)" },
+      to: { opacity: 1, clipPath: "inset(0% 0% 0% 0%)", duration: 0.8, ease: "expo.out" }
+    },
+
+    // --- 2. الدورانات (Rotations & 3D Flips) ---
+    {
+      name: "✦ 7. دوران كامل 360 درجة",
+      from: { opacity: 0, rotation: 360, scale: 0.75 },
+      to: { opacity: 1, rotation: 0, scale: 1, duration: 0.85, ease: "power3.out" }
+    },
+    {
+      name: "✦ 8. دوران عكسي 360 درجة",
+      from: { opacity: 0, rotation: -360, scale: 0.75 },
+      to: { opacity: 1, rotation: 0, scale: 1, duration: 0.85, ease: "power3.out" }
+    },
+    {
+      name: "✦ 9. بندول دوار من الأعلى",
+      from: { opacity: 0, rotation: 28, y: -40, transformOrigin: "50% 0%" },
+      to: { opacity: 1, rotation: 0, y: 0, duration: 0.9, ease: "elastic.out(1, 0.5)" }
+    },
+    {
+      name: "✦ 10. قلب بطاقة أفقي 3D",
+      from: { opacity: 0, rotationY: 90, transformPerspective: 1200 },
+      to: { opacity: 1, rotationY: 0, duration: 0.8, ease: "power2.out" }
+    },
+    {
+      name: "✦ 11. قلب بطاقة رأسي 3D",
+      from: { opacity: 0, rotationX: -85, transformPerspective: 1200 },
+      to: { opacity: 1, rotationX: 0, duration: 0.8, ease: "power2.out" }
+    },
+    {
+      name: "✦ 12. دوامة حلزونية مع تصغير",
+      from: { opacity: 0, rotation: 180, scale: 1.25 },
+      to: { opacity: 1, rotation: 0, scale: 1, duration: 0.85, ease: "power3.out" }
+    },
+
+    // --- 3. الارتدادات (Bounces & Back Snaps) ---
+    {
+      name: "✦ 13. ارتداد كرة متتالي من الأعلى",
+      from: { opacity: 0, y: -120 },
+      to: { opacity: 1, y: 0, duration: 0.95, ease: "bounce.out" }
+    },
+    {
+      name: "✦ 14. ارتداد تصاعدي من الأسفل",
+      from: { opacity: 0, y: 110 },
+      to: { opacity: 1, y: 0, duration: 0.9, ease: "bounce.out" }
+    },
+    {
+      name: "✦ 15. ارتداد جانبي بكرة تنط",
+      from: { opacity: 0, x: 110, rotation: 20 },
+      to: { opacity: 1, x: 0, rotation: 0, duration: 0.9, ease: "bounce.out" }
+    },
+    {
+      name: "✦ 16. ارتداد عكسي خفيف للداخل",
+      from: { opacity: 0, scale: 0.72 },
+      to: { opacity: 1, scale: 1, duration: 0.75, ease: "back.out(1.8)" }
+    },
+    {
+      name: "✦ 17. ارتداد مزدوج مع صعود",
+      from: { opacity: 0, y: 70, scale: 0.9 },
+      to: { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "back.out(2.1)" }
+    },
+    {
+      name: "✦ 18. ارتداد دوران مع استقرار",
+      from: { opacity: 0, rotation: -22, scale: 0.85 },
+      to: { opacity: 1, rotation: 0, scale: 1, duration: 0.85, ease: "back.out(1.7)" }
+    },
+
+    // --- 4. المغناطيس والزنبرك (Magnetic & Elastic Snap) ---
+    {
+      name: "✦ 19. انجذاب مغناطيسي من اليمين",
+      from: { opacity: 0, x: 130, scaleX: 1.08 },
+      to: { opacity: 1, x: 0, scaleX: 1, duration: 1.0, ease: "elastic.out(1.1, 0.4)" }
+    },
+    {
+      name: "✦ 20. انجذاب مغناطيسي من اليسار",
+      from: { opacity: 0, x: -130, scaleX: 1.08 },
+      to: { opacity: 1, x: 0, scaleX: 1, duration: 1.0, ease: "elastic.out(1.1, 0.4)" }
+    },
+    {
+      name: "✦ 21. جذب مغناطيسي رأسي",
+      from: { opacity: 0, y: 95, scaleY: 1.08 },
+      to: { opacity: 1, y: 0, scaleY: 1, duration: 1.0, ease: "elastic.out(1.1, 0.42)" }
+    },
+    {
+      name: "✦ 22. زنبرك مرن مع تمدد",
+      from: { opacity: 0, scale: 0.65 },
+      to: { opacity: 1, scale: 1, duration: 1.05, ease: "elastic.out(1.2, 0.35)" }
+    },
+    {
+      name: "✦ 23. ذبذبة مغناطيسية مائلة",
+      from: { opacity: 0, x: 75, skewX: -12 },
+      to: { opacity: 1, x: 0, skewX: 0, duration: 0.95, ease: "elastic.out(1, 0.45)" }
+    },
+    {
+      name: "✦ 24. اهتزاز زنبركي هادئ عند الوصول",
+      from: { opacity: 0, y: -65, rotation: 6 },
+      to: { opacity: 1, y: 0, rotation: 0, duration: 0.95, ease: "elastic.out(1, 0.5)" }
+    },
+
+    // --- 5. الانزلاقات والتمدد والقص (Slides, Skews & Stretches) ---
+    {
+      name: "✦ 25. انزلاق سلس من اليمين",
+      from: { opacity: 0, x: 70 },
+      to: { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }
+    },
+    {
+      name: "✦ 26. انزلاق سلس من اليسار",
+      from: { opacity: 0, x: -70 },
+      to: { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }
+    },
+    {
+      name: "✦ 27. صعود ناعم من الأسفل",
+      from: { opacity: 0, y: 65 },
+      to: { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }
+    },
+    {
+      name: "✦ 28. هبوط ناعم من الأعلى",
+      from: { opacity: 0, y: -65 },
+      to: { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }
+    },
+    {
+      name: "29. تمدد أفقي كالمطاط",
+      from: { opacity: 0, scaleX: 0.4, scaleY: 1.12 },
+      to: { opacity: 1, scaleX: 1, scaleY: 1, duration: 0.7, ease: "expo.out" }
+    },
+    {
+      name: "✦ 30. تمدد رأسي كالمطاط",
+      from: { opacity: 0, scaleY: 0.4, scaleX: 1.12 },
+      to: { opacity: 1, scaleY: 1, scaleX: 1, duration: 0.7, ease: "expo.out" }
+    },
+    {
+      name: "✦ 31. قص مائل جانبي",
+      from: { opacity: 0, skewX: 18, x: 60 },
+      to: { opacity: 1, skewX: 0, x: 0, duration: 0.65, ease: "power3.out" }
+    },
+    {
+      name: "✦ 32. انزلاق قطري مائل",
+      from: { opacity: 0, x: 75, y: 45 },
+      to: { opacity: 1, x: 0, y: 0, duration: 0.65, ease: "power2.out" }
+    },
+
+    // --- 6. تأثيرات بصرية وعمق (Blur, Depth & Zoom) ---
+    {
+      name: "✦ 33. تركيز بصري من ضبابية",
+      from: { opacity: 0, filter: "blur(14px)", scale: 1.05 },
+      to: { opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.75, ease: "power2.out" }
+    },
+    {
+      name: "✦ 34. خروج من العمق مع ضبابية",
+      from: { opacity: 0, filter: "blur(10px)", scale: 0.8 },
+      to: { opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.75, ease: "power3.out" }
+    },
+    {
+      name: "✦ 35. تقريب سينمائي للداخل",
+      from: { opacity: 0, scale: 0.85 },
+      to: { opacity: 1, scale: 1, duration: 0.65, ease: "power3.out" }
+    },
+    {
+      name: "✦ 36. تلاشي نقي هادئ",
+      from: { opacity: 0 },
+      to: { opacity: 1, duration: 0.55, ease: "power2.out" }
+    }
+  ];
+
+const RANDOM_VALUE = "random";
+  let currentIndex = 0;
+  let isRandomMode = true;
+  let lastRandomIndex = -1;
+
+  const selectEl = document.getElementById("transition-effect-select");
+  const cycleBtn = document.getElementById("cycle-transition-btn");
+
+  let isSelectInteracting = false;
+  let originalHideControls = null;
+  let hideTimerBackup = null;
+
+  function applyDefaultRandomSelection() {
+    isRandomMode = true;
+    if (!selectEl) return;
+
+    const randomOption = Array.from(selectEl.options || []).find(
+      function (opt) {
+        return opt.value === RANDOM_VALUE;
+      }
+    );
+
+    if (randomOption) {
+      randomOption.selected = true;
+      randomOption.defaultSelected = true;
+    }
+
+    selectEl.value = RANDOM_VALUE;
+  }
+
+  function setControlsLock(locked) {
+    isSelectInteracting = locked;
+    const controlsBar = document.getElementById("controls-bar");
+    if (controlsBar) {
+      if (locked) {
+        controlsBar.classList.remove("hidden", "auto-hidden", "is-hidden");
+        controlsBar.style.opacity = "1";
+        controlsBar.style.pointerEvents = "auto";
+      } else {
+        controlsBar.style.removeProperty("opacity");
+        controlsBar.style.removeProperty("pointer-events");
+      }
+    }
+  }
+
+  // التفاف آمن حول أي دالة إخفاء للشريط السفلي إن وُجدت باسم شائع
+  ["hideControlsBar", "hideControls", "scheduleHideControls"].forEach(function (fnName) {
+    if (typeof window[fnName] === "function") {
+      const prevFn = window[fnName];
+      window[fnName] = function () {
+        if (isSelectInteracting || (selectEl && document.activeElement === selectEl)) {
+          return;
+        }
+        return prevFn.apply(this, arguments);
+      };
+    }
+  });
+
+  if (selectEl) {
+    // ضبط "عشوائي" كخيار افتراضي فوري وتأكيده بعد اكتمال التحميل
+    applyDefaultRandomSelection();
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", applyDefaultRandomSelection);
+    }
+    window.addEventListener("load", applyDefaultRandomSelection);
+
+    // عند النقر أو التركيز على القائمة (أو فتح خياراتها)
+    selectEl.addEventListener("pointerdown", function () {
+      setControlsLock(true);
+    });
+
+    selectEl.addEventListener("focus", function () {
+      setControlsLock(true);
+    });
+
+    // عند اختيار عنصر أو إغلاق القائمة أو فقدان التركيز
+    selectEl.addEventListener("change", function () {
+      if (this.value === RANDOM_VALUE) {
+        isRandomMode = true;
+      } else {
+        isRandomMode = false;
+        const parsed = parseInt(this.value, 10);
+        if (!Number.isNaN(parsed) && TRANSITION_PRESETS[parsed]) {
+          currentIndex = parsed;
+        }
+      }
+
+this.blur();
+      document.body.setAttribute("tabindex", "-1");
+      document.body.focus({ preventScroll: true });
+
+      // إعادة تشغيل الحركة فوراً على الشريحة الحالية
+      if (typeof window.replayCurrentSlide === "function") {
+        window.replayCurrentSlide();
+      }
+
+      setTimeout(function () {
+        if (document.activeElement !== selectEl) {
+          setControlsLock(false);
+        }
+      }, 200);
+    });
+
+    selectEl.addEventListener("blur", function () {
+      setTimeout(function () {
+        setControlsLock(false);
+      }, 200);
+    });
+
+    // أثناء التنقل بالأسهم داخل القائمة المفتوحة
+    selectEl.addEventListener("keydown", function (e) {
+      if (["ArrowDown", "ArrowUp", "Enter", "Escape", " "].includes(e.key)) {
+        setControlsLock(true);
+        if (e.key === "Escape" || e.key === "Enter") {
+          setTimeout(function () {
+            setControlsLock(false);
+          }, 200);
+        }
+      }
+    });
+  }
+
+  // فك القفل بأمان إذا نقر المستخدم خارج القائمة
+  document.addEventListener("pointerdown", function (e) {
+    if (!isSelectInteracting) return;
+    if (selectEl && !selectEl.contains(e.target)) {
+      setTimeout(function () {
+        setControlsLock(false);
+      }, 150);
+    }
+  });
+
+  if (selectEl) {
+    selectEl.innerHTML = "";
+
+    const randomOpt = document.createElement("option");
+    randomOpt.value = RANDOM_VALUE;
+    randomOpt.textContent = "✦ ⇄ عشوائي";
+    selectEl.appendChild(randomOpt);
+
+    TRANSITION_PRESETS.forEach(function (preset, idx) {
+      const opt = document.createElement("option");
+      opt.value = String(idx);
+      opt.textContent = preset.name;
+      selectEl.appendChild(opt);
+    });
+
+    selectEl.value = String(currentIndex);
+
+    selectEl.addEventListener("change", function () {
+      if (this.value === RANDOM_VALUE) {
+        isRandomMode = true;
+        return;
+      }
+      isRandomMode = false;
+      const parsed = parseInt(this.value, 10);
+      if (!Number.isNaN(parsed) && TRANSITION_PRESETS[parsed]) {
+        currentIndex = parsed;
+      }
+    });
+  }
+
+  if (cycleBtn) {
+    cycleBtn.addEventListener("click", function () {
+      isRandomMode = false;
+      currentIndex = (currentIndex + 1) % TRANSITION_PRESETS.length;
+      if (selectEl) {
+        selectEl.value = String(currentIndex);
+      }
+    });
+  }
+
+  function pickPresetForTransition() {
+    if (!isRandomMode) {
+      return TRANSITION_PRESETS[currentIndex] || TRANSITION_PRESETS[0];
+    }
+    if (TRANSITION_PRESETS.length === 1) return TRANSITION_PRESETS[0];
+
+    let nextIdx = Math.floor(Math.random() * TRANSITION_PRESETS.length);
+    if (nextIdx === lastRandomIndex) {
+      nextIdx = (nextIdx + 1) % TRANSITION_PRESETS.length;
+    }
+    lastRandomIndex = nextIdx;
+    return TRANSITION_PRESETS[nextIdx];
+  }
+
+  function applySelectedSlideTransition(slideEl) {
+    if (!slideEl) return;
+    const preset = pickPresetForTransition();
+    const targets = getTargets(slideEl);
+
+    gsap.killTweensOf(targets);
+    gsap.set(targets, { clearProps: CLEAN_PROPS });
+
+    const toVars = Object.assign({}, preset.to, {
+      stagger: targets.length > 1 ? 0.06 : 0,
+      onComplete: function () {
+        gsap.set(targets, { clearProps: CLEAN_PROPS });
+      }
+    });
+
+    gsap.fromTo(targets, preset.from, toVars);
+  }
+
+  const originalAnimateSlideIn =
+    typeof window.animateSlideIn === "function" ? window.animateSlideIn : null;
+
+  window.animateSlideIn = function (slideEl) {
+    if (originalAnimateSlideIn) {
+      originalAnimateSlideIn(slideEl);
+    }
+    applySelectedSlideTransition(slideEl);
+  };
+})();
+
+  function goToSlide(index) {
+    if (index < 0 || index >= slides.length || index === currentSlide || isTransitioning) return;
+
+    isTransitioning = true;
+    const outgoing = slides[currentSlide];
+    const incoming = slides[index];
+
+    gsap.killTweensOf(slides);
+
+    gsap.to(outgoing, {
+      opacity: 0,
+      duration: 0.18,
+      onComplete: () => {
+        outgoing.classList.remove('active');
+        gsap.set(outgoing, { clearProps: "all" });
+
+        incoming.classList.add('active');
+        currentSlide = index;
+        updateUI();
+        animateSlideIn(incoming);
+
+        isTransitioning = false;
+      }
+    });
+  }
+
+  function replayCurrentSlide() {
+    animateSlideIn(slides[currentSlide]);
+  }
+
+  function updateUI() {
+    slideCounter.textContent = `${currentSlide + 1} / ${slides.length}`;
+    const pct = ((currentSlide + 1) / slides.length) * 100;
+    progressFill.style.width = `${pct}%`;
+  }
+
+  function buildOverview() {
+    overviewGrid.innerHTML = '';
+    slides.forEach((s, idx) => {
+      const card = document.createElement('div');
+      card.className = `thumb-card ${idx === currentSlide ? 'current' : ''}`;
+      card.tabIndex = 0;
+      const label = idx === 0 ? 'غلاف العرض' : (idx === slides.length - 1 ? 'الشريحة الختامية' : `شريحة ${idx < 10 ? '0' + idx : idx}`);
+      card.innerHTML = `
+        <div style="color: var(--pal-rust); font-weight: 800; font-size:0.88rem; margin-bottom: 4px;">${label}</div>
+        <div style="font-family: 'Cairo'; font-size: 0.98rem; font-weight: 700; line-height:1.35;">${s.getAttribute('data-title')}</div>
+      `;
+      card.onclick = () => {
+        toggleOverview();
+        goToSlide(idx);
+      };
+      overviewGrid.appendChild(card);
+    });
+  }
+
+  function toggleOverview() {
+    if (!overviewModal.classList.contains('open')) {
+      buildOverview();
+      overviewModal.classList.add('open');
+      setTimeout(() => {
+        const cards = overviewGrid.querySelectorAll('.thumb-card');
+        if (cards[currentSlide]) {
+          cards[currentSlide].focus();
+        } else if (cards[0]) {
+          cards[0].focus();
+        }
+      }, 50);
+    } else {
+      overviewModal.classList.remove('open');
+    }
+  }
+
+  function toggleFullscreen() {
+    const elem = document.getElementById('stage-container');
+    if (!document.fullscreenElement) {
+      elem.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen();
+    }
+  }
+
+  document.getElementById('next-btn').onclick = () => goToSlide(currentSlide + 1);
+  document.getElementById('prev-btn').onclick = () => goToSlide(currentSlide - 1);
+
+  document.addEventListener('keydown', (e) => {
+    const key = e.key.toLowerCase();
+    const code = e.code;
+
+    if (overviewModal.classList.contains('open')) {
+      if (key === 'w' || code === 'KeyW') {
+        e.preventDefault();
+        setAspectRatio('16:9');
+        return;
+      } else if (key === 's' || code === 'KeyS') {
+        e.preventDefault();
+        setAspectRatio('4:3');
+        return;
+      }
+      const cards = Array.from(overviewGrid.querySelectorAll('.thumb-card'));
+      let activeIdx = cards.findIndex(c => c === document.activeElement);
+      if (activeIdx === -1) activeIdx = currentSlide;
+      let cols = 1;
+      if (cards.length > 1) {
+        const top0 = cards[0].getBoundingClientRect().top;
+        for (let i = 1; i < cards.length; i++) {
+          if (Math.abs(cards[i].getBoundingClientRect().top - top0) < 5) cols++;
+          else break;
+        }
+      }
+
+      if (/^[1-9]$/.test(e.key) || (code && code.startsWith('Digit'))) {
+        const targetNum = parseInt(e.key || code.slice(-1), 10);
+        if (targetNum >= 1 && targetNum <= cards.length) {
+          e.preventDefault();
+          cards[targetNum - 1]?.focus();
+          return;
+        }
+      }
+
+      if (key === 'arrowright' || code === 'ArrowRight') {
+        e.preventDefault();
+        activeIdx = Math.max(0, activeIdx - 1);
+        cards[activeIdx]?.focus();
+        return;
+      } else if (key === 'arrowleft' || code === 'ArrowLeft') {
+        e.preventDefault();
+        activeIdx = Math.min(cards.length - 1, activeIdx + 1);
+        cards[activeIdx]?.focus();
+        return;
+      } else if (key === 'arrowup' || code === 'ArrowUp') {
+        e.preventDefault();
+        activeIdx = Math.max(0, activeIdx - cols);
+        cards[activeIdx]?.focus();
+        return;
+      } else if (key === 'arrowdown' || code === 'ArrowDown') {
+        e.preventDefault();
+        activeIdx = Math.min(cards.length - 1, activeIdx + cols);
+        cards[activeIdx]?.focus();
+        return;
+      } else if (key === 'enter' || code === 'Enter' || code === 'NumpadEnter') {
+        e.preventDefault();
+        if (document.activeElement && document.activeElement.classList.contains('thumb-card')) {
+          document.activeElement.click();
+        }
+        return;
+      } else if (key === 'o' || code === 'KeyO' || key === 'escape' || code === 'Escape') {
+        e.preventDefault();
+        toggleOverview();
+        return;
+      } else if (key === 'f' || code === 'KeyF') {
+        e.preventDefault();
+        toggleFullscreen();
+        return;
+      }
+      return;
+    }
+
+    if (/^[0-9]$/.test(e.key) || (code && (code.startsWith('Digit') || code.startsWith('Numpad')) && !isNaN(parseInt(code.slice(-1))))) {
+      const digit = /^[0-9]$/.test(e.key) ? e.key : code.slice(-1);
+      slideNumberBuffer += digit;
+
+      if (slideBufferTimer) clearTimeout(slideBufferTimer);
+      slideBufferTimer = setTimeout(() => {
+        slideNumberBuffer = '';
+        slideBufferTimer = null;
+      }, 1500);
+      return;
+    }
+
+    if ((e.key === 'Enter' || code === 'Enter' || code === 'NumpadEnter') && slideNumberBuffer.length > 0) {
+      e.preventDefault();
+      const targetSlideNum = parseInt(slideNumberBuffer, 10);
+      slideNumberBuffer = '';
+      if (slideBufferTimer) {
+        clearTimeout(slideBufferTimer);
+        slideBufferTimer = null;
+      }
+
+      if (targetSlideNum >= 1 && targetSlideNum <= slides.length) {
+        goToSlide(targetSlideNum - 1);
+      }
+      return;
+    }
+
+    if (key === 'f' || code === 'KeyF') {
+      e.preventDefault();
+      toggleFullscreen();
+      return;
+    }
+
+    if (key === 'o' || code === 'KeyO') {
+      e.preventDefault();
+      toggleOverview();
+      return;
+    }
+
+    if (key === 'w' || code === 'KeyW') {
+      e.preventDefault();
+      setAspectRatio('16:9');
+      return;
+    }
+
+    if (key === 's' || code === 'KeyS') {
+      e.preventDefault();
+      setAspectRatio('4:3');
+      return;
+    }
+
+    if (key === 'r' || code === 'KeyR') {
+      e.preventDefault();
+      replayCurrentSlide();
+      return;
+    }
+
+if (key === 'arrowdown' || code === 'ArrowDown' || key === 'arrowup' || code === 'ArrowUp') {
+      e.preventDefault();
+      const selectEl = document.getElementById('transition-effect-select');
+      const total = selectEl ? selectEl.options.length : 0;
+      if (selectEl && total > 0) {
+        const dir = (key === 'arrowdown' || code === 'ArrowDown') ? 1 : -1;
+        const nextIdx = (selectEl.selectedIndex + dir + total) % total;
+        selectEl.selectedIndex = nextIdx;
+        selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      return;
+    }
+
+
+if (key === 'arrowleft' || code === 'ArrowLeft') {
+      goToSlide(currentSlide + 1);
+    } else if (key === 'arrowright' || code === 'ArrowRight') {
+      goToSlide(currentSlide - 1);
+    }
+  });
+
+
+		 // --- التشغيل التلقائي للشرائح ---
+  const autoplayToggleBtn = document.getElementById('autoplay-toggle-btn');
+  const autoplayIntervalSelect = document.getElementById('autoplay-interval-select');
+  const autoplayIcon = document.getElementById('autoplay-icon');
+
+  let isAutoplayActive = false;
+  let autoplayTimer = null;
+
+  function clearAutoplayTimer() {
+    if (autoplayTimer) {
+      clearTimeout(autoplayTimer);
+      autoplayTimer = null;
+    }
+  }
+
+  function updateAutoplayButtonUI() {
+    if (!autoplayToggleBtn) return;
+    autoplayToggleBtn.classList.toggle('is-playing', isAutoplayActive);
+    autoplayToggleBtn.setAttribute('aria-pressed', String(isAutoplayActive));
+    if (autoplayIcon) {
+      autoplayIcon.className = isAutoplayActive ? 'fa-solid fa-pause' : 'fa-solid fa-play';
+    }
+  }
+
+  function scheduleNextAutoplayStep() {
+    clearAutoplayTimer();
+    if (!isAutoplayActive) return;
+
+    const delayMs = parseInt(autoplayIntervalSelect?.value || '5000', 10);
+    autoplayTimer = setTimeout(() => {
+      if (!isAutoplayActive) return;
+
+      if (currentSlide < slides.length - 1) {
+        goToSlide(currentSlide + 1);
+        scheduleNextAutoplayStep();
+      } else {
+        // إيقاف تلقائي عند الوصول إلى آخر شريحة
+        stopAutoplay();
+      }
+    }, delayMs);
+  }
+
+  function startAutoplay() {
+    if (currentSlide >= slides.length - 1) {
+      goToSlide(0);
+    }
+    isAutoplayActive = true;
+    updateAutoplayButtonUI();
+    scheduleNextAutoplayStep();
+  }
+
+  function stopAutoplay() {
+    isAutoplayActive = false;
+    clearAutoplayTimer();
+    updateAutoplayButtonUI();
+  }
+
+  function toggleAutoplay() {
+    if (isAutoplayActive) {
+      stopAutoplay();
+    } else {
+      startAutoplay();
+    }
+  }
+
+  autoplayToggleBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleAutoplay();
+  });
+
+  autoplayIntervalSelect?.addEventListener('change', () => {
+    autoplayIntervalSelect.blur();
+    if (isAutoplayActive) {
+      scheduleNextAutoplayStep();
+    }
+  });
+
+// مفتاح الاختصار (P) لتشغيل وإيقاف التشغيل التلقائي
+  document.addEventListener('keydown', (e) => {
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+    if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+    if (overviewModal.classList.contains('open')) return;
+
+    if (e.key.toLowerCase() === 'p' || e.code === 'KeyP') {
+      e.preventDefault();
+      toggleAutoplay();
+    }
+  });
+
+
+  updateUI();
+  animateSlideIn(slides[0]);
+
+(function () {
+  // حفظ أي تعريف سابق لدالة setAspectRatio إن وُجد لتفادي فقدان أي منطق داخلي
+  const previousSetAspectRatio =
+    typeof window.setAspectRatio === "function" ? window.setAspectRatio : null;
+
+  function applyAspectClassesAndButtons(targetRatio) {
+    const btn43 = document.getElementById("btn-4-3");
+    const btn169 = document.getElementById("btn-16-9");
+
+    if (btn43) {
+      btn43.classList.toggle("active", targetRatio === "4:3");
+      btn43.setAttribute("aria-pressed", String(targetRatio === "4:3"));
+    }
+    if (btn169) {
+      btn169.classList.toggle("active", targetRatio === "16:9");
+      btn169.setAttribute("aria-pressed", String(targetRatio === "16:9"));
+    }
+
+    const containers = document.querySelectorAll(
+      ".presentation-stage, .slides-wrapper, .deck-stage, .slide-container, .stage, .slide"
+    );
+
+    containers.forEach(function (el) {
+      el.classList.remove("ratio-4-3", "ratio-16-9", "aspect-4-3", "aspect-16-9");
+      if (targetRatio === "4:3") {
+        el.classList.add("ratio-4-3", "aspect-4-3");
+      } else {
+        el.classList.add("ratio-16-9", "aspect-16-9");
+      }
+      el.dataset.aspectRatio = targetRatio;
+    });
+
+    if (typeof window.updateSlideScale === "function") {
+      window.updateSlideScale();
+    } else if (typeof window.rescaleSlides === "function") {
+      window.rescaleSlides();
+    }
+  }
+
+  // دالة التبديل الأساسية بين 4:3 و 16:9
+  window.setAspectRatio = function (ratio) {
+    const targetRatio = ratio === "16:9" ? "16:9" : "4:3";
+    window.currentAspectRatio = targetRatio;
+
+    if (previousSetAspectRatio && previousSetAspectRatio !== window.setAspectRatio) {
+      try {
+        previousSetAspectRatio.call(this, targetRatio);
+      } catch (e) {}
+    }
+
+    applyAspectClassesAndButtons(targetRatio);
+  };
+
+  // جعل 4:3 هو الوضع التلقائي فور جاهزية الصفحة
+  function initDefault43() {
+    window.setAspectRatio("4:3");
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initDefault43);
+  } else {
+    initDefault43();
+  }
+
+  window.addEventListener("load", function () {
+    initDefault43();
+    setTimeout(initDefault43, 150);
+  });
+
+  // تفعيل وضع ملء الشاشة عند أول نقرة أو ضغطة مفتاح حقيقية من المستخدم
+  function requestFullscreenOnRealGesture() {
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+      cleanupGestureListeners();
+      return;
+    }
+
+    if (typeof window.toggleFullscreen === "function") {
+      try {
+        window.toggleFullscreen();
+      } catch (e) {}
+    } else {
+      const root = document.documentElement;
+      const req =
+        root.requestFullscreen ||
+        root.webkitRequestFullscreen ||
+        root.mozRequestFullScreen ||
+        root.msRequestFullscreen;
+
+      if (typeof req === "function") {
+        try {
+          req.call(root);
+        } catch (e) {}
+      }
+    }
+
+    cleanupGestureListeners();
+  }
+
+  function handleTrustedGesture(event) {
+    // التحقق من أن الحدث حقيقي وصادر من المستخدم وليس مصطنعاً برمجياً
+    if (!event || event.isTrusted !== true) return;
+    requestFullscreenOnRealGesture();
+  }
+
+  function cleanupGestureListeners() {
+    document.removeEventListener("pointerdown", handleTrustedGesture, true);
+    document.removeEventListener("keydown", handleTrustedGesture, true);
+  }
+
+  document.addEventListener("pointerdown", handleTrustedGesture, { capture: true, passive: true });
+  document.addEventListener("keydown", handleTrustedGesture, { capture: true, passive: true });
+})();
+
+
+(() => {
+  const openAboutBtn = document.getElementById("open-about-modal-btn");
+  const openHelpBtn = document.getElementById("open-help-modal-btn");
+  const aboutModal = document.getElementById("about-modal");
+  const helpModal = document.getElementById("help-modal");
+
+  function openModal(modal) {
+    if (!modal) return;
+    modal.hidden = false;
+  }
+
+  function closeModal(modal) {
+    if (!modal) return;
+    modal.hidden = true;
+  }
+
+  function closeAllModals() {
+    closeModal(aboutModal);
+    closeModal(helpModal);
+  }
+
+  openAboutBtn?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    closeModal(helpModal);
+    openModal(aboutModal);
+  });
+
+  openHelpBtn?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    closeModal(aboutModal);
+    openModal(helpModal);
+  });
+
+  document.querySelectorAll("[data-close-modal]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const targetId = btn.getAttribute("data-close-modal");
+      closeModal(document.getElementById(targetId));
+    });
+  });
+
+  [aboutModal, helpModal].forEach((modal) => {
+    modal?.addEventListener("click", (e) => {
+      if (e.target === modal) closeModal(modal);
+    });
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeAllModals();
+  });
+})();
+
+
+</script>
+</body>
+</html>
